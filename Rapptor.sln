@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rapptor.Domain", "Rapptor.Domain\Rapptor.Domain.csproj", "{A87A0893-5977-4DBF-BF63-36856281531A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9C386117-D7E8-416D-BBE8-637A61BB2CC8}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BDF1DBAD-FB33-4413-8900-2E10496FD1FD}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		.gitattributes = .gitattributes
+		license.txt = license.txt
+		readme.markdown = readme.markdown
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{AADD6374-ADAC-4D13-8169-883655733D65}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reference", "Reference", "{5F90EFDF-7E7F-4F59-881D-EE7D467F9767}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rapptor.Tests", "Rapptor.Tests\Rapptor.Tests.csproj", "{24F68FDA-4E1C-4615-99DE-C0BF77E327BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rapptor.Authorization", "Rapptor.Authorization\Rapptor.Authorization.csproj", "{9D674945-89D9-4587-AEB6-7A699F32038E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A87A0893-5977-4DBF-BF63-36856281531A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A87A0893-5977-4DBF-BF63-36856281531A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A87A0893-5977-4DBF-BF63-36856281531A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A87A0893-5977-4DBF-BF63-36856281531A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24F68FDA-4E1C-4615-99DE-C0BF77E327BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24F68FDA-4E1C-4615-99DE-C0BF77E327BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24F68FDA-4E1C-4615-99DE-C0BF77E327BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24F68FDA-4E1C-4615-99DE-C0BF77E327BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D674945-89D9-4587-AEB6-7A699F32038E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D674945-89D9-4587-AEB6-7A699F32038E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D674945-89D9-4587-AEB6-7A699F32038E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D674945-89D9-4587-AEB6-7A699F32038E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A87A0893-5977-4DBF-BF63-36856281531A} = {AADD6374-ADAC-4D13-8169-883655733D65}
+		{9D674945-89D9-4587-AEB6-7A699F32038E} = {AADD6374-ADAC-4D13-8169-883655733D65}
+		{24F68FDA-4E1C-4615-99DE-C0BF77E327BA} = {5F90EFDF-7E7F-4F59-881D-EE7D467F9767}
+	EndGlobalSection
+EndGlobal
