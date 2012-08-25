@@ -7,20 +7,21 @@ using Rapptor.Domain;
 namespace Rapptor.Tests.Unit
 {
 	[TestFixture]
-	public class TokenSpec
+	public class UserServiceSpec
 	{
 		[Test]
-		public void TokenServiceCanRetrieveCurrentTokenInfo()
+		public void TokenServiceCanRetrieveUserInfo()
 		{
 			//Setup
+			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
-			var tokenService = new TokenService(apiCaller);
+			var usersService = new UsersService(apiCaller);
 
 			//Execute
-			var currentTokenInfo = tokenService.RetrieveCurrentTokenInfo();
+			User user = usersService.RetrieveUser(userId);
 
 			//Verify
-			currentTokenInfo.ShouldNotBeNull();
+			user.ShouldNotBeNull();
 
 			//Teardown
 		}

@@ -12,7 +12,7 @@ namespace Rapptor.Tests.Integration
 		private const string ACCESS_TOKEN = "[INSERT ACCESS TOKEN HERE]";
 
 		[Test]
-		public void RestSharpAipCallerCanGetTokenInfo()
+		public void RestSharpApiCallerCanGetSimpleEndpoint()
 		{
 			//Setup
 			IApiCaller restSharpApiCaller = new RestSharpApiCaller(ACCESS_TOKEN);
@@ -25,6 +25,25 @@ namespace Rapptor.Tests.Integration
 			tokenInfo.User.ShouldNotBeNull();
 			tokenInfo.User.Description.ShouldNotBeNull();
 			tokenInfo.User.Counts.ShouldNotBeNull();
+
+			//Teardown
+		}
+
+		[Test]
+		public void RestSharpApiCallerCanGetEndpointWithVariable()
+		{
+			//Setup
+			const string userId = "1";
+			IApiCaller restSharpApiCaller = new RestSharpApiCaller(ACCESS_TOKEN);
+
+			//Execute
+			var user = restSharpApiCaller.ApiGet<User>("users/" + userId);
+
+			//Verify
+			user.ShouldNotBeNull();
+			user.ShouldNotBeNull();
+			user.Description.ShouldNotBeNull();
+			user.Counts.ShouldNotBeNull();
 
 			//Teardown
 		}
