@@ -9,7 +9,7 @@ Release Notes
 **Version 0.3**
 - Added TokenSpec
 - Added RestSharpApiCallerSpec
-- Added Raptor.Api
+- Added Rapptor.Api
 - Fixed Domain issues.
 
 **Version 0.2.1 (not released on NuGet)**
@@ -26,14 +26,14 @@ Using Rapptor.Api
 --
 
 1. Authenticate first to ensure you have an `access_token`
-1. Get Raptor.Api from NuGet
+1. Get Rapptor.Api from NuGet
 1. Initialize an instance of the appropriate API service while passing it an `IApiCaller` (e.g. `TokenService(new RestSharpApiCaller(access_token))`)
 1. Call the appropriate API method (e.g. `tokenService.RetriveCurrentTokenInfo();`)
 
 Using Rapptor.Authentication
 --
 
-1. Get Raptor.Authentication from NuGet
+1. Get Rapptor.Authentication from NuGet
 1. Initialize an instance of the `AuthorizationService` passing in the appropriate parameters
 1. Subscribe to the AccessResponseReceived event (or provide a callback to the `RetrieveAccessToken(...)` call)
 1. Call `authorizationService.ConnectToClearingHouse();`
@@ -67,7 +67,7 @@ authorizationService.RetriveAccessToken();
 Using Rapptor.Domain
 --
 
-1. Get Raptor.Domain from NuGet
+1. Get Rapptor.Domain from NuGet
 1. Add `using Rapptor.Domain;` to your class
 1. Use the included classes when interfacing with the App.net API
 
