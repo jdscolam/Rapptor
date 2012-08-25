@@ -43,6 +43,7 @@ Using Rapptor.Authentication
 **NOTE: Authentication will open a browser window in another process so the user can authorize the application on App.net!**
 
 **Example from AuthorizationSpec.cs**
+
 var scopes = new List<Scope>
 				          {
 					          Scope.Stream
