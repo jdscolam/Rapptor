@@ -10,18 +10,20 @@ namespace Rapptor.Tests.Unit
 	public class UserServiceSpec
 	{
 		[Test]
-		public void TokenServiceCanRetrieveUserInfo()
+		public void UsersServiceCanRetrieveUserInfo()
 		{
 			//Setup
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
+			A.CallTo(() => apiCaller.ApiGet<User>(UsersService.USERS_ENDPOINT + userId)).Returns(new User { Id = "1" });
 
 			//Execute
-			User user = usersService.RetrieveUser(userId);
+			var userRetrieved = usersService.RetrieveUser(userId);
 
 			//Verify
-			user.ShouldNotBeNull();
+			userRetrieved.ShouldNotBeNull();
+			userRetrieved.Id.ShouldEqual(userId);
 
 			//Teardown
 		}

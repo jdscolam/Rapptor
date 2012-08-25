@@ -4,7 +4,7 @@ namespace Rapptor.Api
 {
 	public class UsersService
 	{
-		private const string USERS_ENDPOINT = "users/";
+		public const string USERS_ENDPOINT = "users/";
 
 		private readonly IApiCaller _apiCaller;
 
