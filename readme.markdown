@@ -6,7 +6,13 @@ Freedom in the key of C#, or a C# implementation of the App.net API.
 Release Notes
 --
 
-**Version 0.2.1 (not released on GitHub)**
+**Version 0.3**
+-Added TokenSpec
+-Added RestSharpApiCallerSpec
+-Added Raptor.Api
+-Fixed Domain issues.
+
+**Version 0.2.1 (not released on NuGet)**
 - Added configurable Scopes to Authorization Spec
 
 **Version 0.2**
@@ -15,6 +21,14 @@ Release Notes
 **Version 0.1**
 - Initial Release
 - Added a basic implementation of all key App.net objects.
+
+Using Rapptor.Api
+--
+
+1. Authenticate first to ensure you have an `access_token`
+1. Get Raptor.Api from NuGet
+1. Initialize an instance of the appropriate API service while passing it an `IApiCaller` (e.g. `TokenService(new RestSharpApiCaller(access_token))`)
+1. Call the appropriate API method (e.g. `tokenService.RetriveCurrentTokenInfo();`)
 
 Using Rapptor.Authentication
 --
