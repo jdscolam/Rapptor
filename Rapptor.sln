@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rapptor.Tests", "Rapptor.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rapptor.Authorization", "Rapptor.Authorization\Rapptor.Authorization.csproj", "{9D674945-89D9-4587-AEB6-7A699F32038E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rapptor.Api", "Rapptor.Api\Rapptor.Api.csproj", "{CBB50B80-D9C3-4F26-A9B0-D69CE28FD4AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{9D674945-89D9-4587-AEB6-7A699F32038E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D674945-89D9-4587-AEB6-7A699F32038E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D674945-89D9-4587-AEB6-7A699F32038E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBB50B80-D9C3-4F26-A9B0-D69CE28FD4AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBB50B80-D9C3-4F26-A9B0-D69CE28FD4AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBB50B80-D9C3-4F26-A9B0-D69CE28FD4AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBB50B80-D9C3-4F26-A9B0-D69CE28FD4AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +57,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A87A0893-5977-4DBF-BF63-36856281531A} = {AADD6374-ADAC-4D13-8169-883655733D65}
 		{9D674945-89D9-4587-AEB6-7A699F32038E} = {AADD6374-ADAC-4D13-8169-883655733D65}
+		{CBB50B80-D9C3-4F26-A9B0-D69CE28FD4AD} = {AADD6374-ADAC-4D13-8169-883655733D65}
 		{24F68FDA-4E1C-4615-99DE-C0BF77E327BA} = {5F90EFDF-7E7F-4F59-881D-EE7D467F9767}
 	EndGlobalSection
 EndGlobal

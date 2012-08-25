@@ -11,8 +11,8 @@ namespace Rapptor.Domain
 	    public Description Description { get; set; }
 		public string Timezone { get; set; }
 	    public string Locale { get; set; }
-	    public Image AvatarImage { get; set; }
-	    public Image CoverImage { get; set; }
+	    public WebImage AvatarImage { get; set; }
+	    public WebImage CoverImage { get; set; }
 	    public string Type { get; set; }
 	    public DateTime? CreatedAt { get; set; }
 	    public Counts Counts { get; set; }

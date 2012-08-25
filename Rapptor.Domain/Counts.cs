@@ -2,8 +2,8 @@ namespace Rapptor.Domain
 {
 	public class Counts
 	{
-		public int Follows { get; set; }
-		public int FollwedBy { get; set; }
+		public int Followers { get; set; }
+		public int Following { get; set; }
 		public int Posts { get; set; }
 	}
 }

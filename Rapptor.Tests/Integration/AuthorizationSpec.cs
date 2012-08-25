@@ -44,6 +44,23 @@ namespace Rapptor.Tests.Integration
 			wasSuccessful.ShouldBeTrue();
 			
 			//Teardown
+			authorizationService.DisconnectFromClearingHouse();
+		}
+
+		[Test]
+		public void AuthorizationServiceCanDisconnectFromClearingHouse()
+		{
+			//Setup
+			var authorizationService = new AuthorizationService(CLEARING_HOUSE_ADDRESS, CLIENT_ID, CLIENT_SECRET, _scopes);
+
+			//Execute
+			authorizationService.ConnectToClearingHouse();
+			var wasSuccessful = authorizationService.DisconnectFromClearingHouse();
+
+			//Verify
+			wasSuccessful.ShouldBeTrue();
+
+			//Teardown
 		}
 
 		[Test]
@@ -67,6 +84,7 @@ namespace Rapptor.Tests.Integration
 			this._autoResetEvent.WaitOne();
 
 			//Teardown
+			authorizationService.DisconnectFromClearingHouse();
 		}
 
 		[Test]
@@ -90,6 +108,7 @@ namespace Rapptor.Tests.Integration
 			this._autoResetEvent.WaitOne();
 
 			//Teardown
+			authorizationService.DisconnectFromClearingHouse();
 		}
 	}
 }

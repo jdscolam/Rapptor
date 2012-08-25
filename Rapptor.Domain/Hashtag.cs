@@ -1,6 +1,6 @@
 namespace Rapptor.Domain
 {
-	public class Hashtags : IEntity
+	public class Hashtag : IEntity
 	{
 		public string Name { get; set; }
 		public int Pos { get; set; }

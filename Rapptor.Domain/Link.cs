@@ -2,7 +2,7 @@ using System;
 
 namespace Rapptor.Domain
 {
-	public class Links : IEntity
+	public class Link : IEntity
 	{
 		public string Text { get; set; }
 		public Uri Url { get; set; }

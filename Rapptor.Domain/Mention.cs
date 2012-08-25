@@ -1,6 +1,6 @@
 namespace Rapptor.Domain
 {
-	public class Mentions : IEntity
+	public class Mention : IEntity
 	{
 		public string Name { get; set; }
 		public string Id { get; set; }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Rapptor.Domain.Authorization;
 using RestSharp;
+using SignalR.Client;
 using SignalR.Client.Hubs;
 
 namespace Rapptor.Authorization
@@ -101,17 +102,35 @@ namespace Rapptor.Authorization
 			var task = _hubConnection.Start();
 			task.Wait();
 
-			if(task.IsFaulted)
+			if (task.IsFaulted)
 			{
 				var message = string.Format("Connection to clearing house at {0} Failed!  ", _hubConnection.Url);
 				throw task.Exception != null ? new AggregateException(message + task.Exception.Message, task.Exception) : new Exception(message + "Task faulted without aggregate exception.");
-				
+
 			}
 
-			if(task.IsCanceled)
+			if (task.IsCanceled)
 				throw new TaskCanceledException(string.Format("Connection to clearing house at {0} Failed!  Task was cancelled.", _hubConnection.Url));
 
-			return _hubConnection.ConnectionId != null;
+			return _hubConnection.State == ConnectionState.Connected;
+		}
+
+		/// <summary>
+		/// Disconnects from the configured clearing house
+		/// </summary>
+		public bool DisconnectFromClearingHouse()
+		{
+			try
+			{
+				_hubConnection.Stop();
+			}
+			catch (Exception e)
+			{
+				var message = string.Format("Disconnecting from clearing house at {0} Failed!  ", _hubConnection.Url);
+				throw new Exception(message, e);
+			}
+
+			return _hubConnection.State == ConnectionState.Disconnected;
 		}
 
 		/// <summary>
