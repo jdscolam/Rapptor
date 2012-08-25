@@ -7,10 +7,10 @@ Release Notes
 --
 
 **Version 0.3**
--Added TokenSpec
--Added RestSharpApiCallerSpec
--Added Raptor.Api
--Fixed Domain issues.
+- Added TokenSpec
+- Added RestSharpApiCallerSpec
+- Added Raptor.Api
+- Fixed Domain issues.
 
 **Version 0.2.1 (not released on NuGet)**
 - Added configurable Scopes to Authorization Spec
