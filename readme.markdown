@@ -7,10 +7,10 @@ Release Notes
 --
 
 **HUGE UPDATE - Version 0.4**
--Added full UsersSpec
--Added full PostsSpec
--Added integration tests for Posts and Users
--Fixed minor Domain issues
+- Added full UsersSpec
+- Added full PostsSpec
+- Added integration tests for Posts and Users
+- Fixed minor Domain issues
 
 **Version 0.3**
 - Added TokenSpec
