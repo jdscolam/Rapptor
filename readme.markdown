@@ -49,7 +49,7 @@ Using Rapptor.Authentication
 **NOTE: Authentication will open a browser window in another process so the user can authorize the application on App.net!**
 
 **Example from AuthorizationSpec.cs**
-
+```c#
 var scopes = new List<Scope>
 				          {
 					          Scope.Stream
@@ -69,6 +69,7 @@ authorizationService.AccessResponseReceived += accessResponse =>
 
 authorizationService.ConnectToClearingHouse();
 authorizationService.RetriveAccessToken();
+```
 
 Using Rapptor.Domain
 --
