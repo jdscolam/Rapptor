@@ -14,9 +14,9 @@ namespace Rapptor.Domain
 
 		public string Id { get; set; }
 		public string Name { get; set; }
-		public IEnumerable<string> UserIds { get; set; }
-		public IEnumerable<string> Hashtags { get; set; }
-		public IEnumerable<string> LinkDomains { get; set; }
-		public IEnumerable<string> MentionUserIds { get; set; }
+		public List<string> UserIds { get; set; }
+		public List<string> Hashtags { get; set; }
+		public List<string> LinkDomains { get; set; }
+		public List<string> MentionUserIds { get; set; }
 	}
 }

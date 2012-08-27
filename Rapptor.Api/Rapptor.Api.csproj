@@ -44,8 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PostsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RestSharpApiCaller.cs" />
+    <Compile Include="ApiCaller\RestSharpApiCaller.cs" />
     <Compile Include="TokenService.cs" />
     <Compile Include="UsersService.cs" />
   </ItemGroup>

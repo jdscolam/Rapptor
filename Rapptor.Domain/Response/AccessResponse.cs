@@ -1,4 +1,4 @@
-﻿namespace Rapptor.Domain.Authorization
+﻿namespace Rapptor.Domain.Response
 {
 	public class AccessResponse
 	{

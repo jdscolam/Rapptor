@@ -1,13 +1,5 @@
 namespace Rapptor.Domain.Authorization
 {
-
-	//	   stream: read a user's stream
-	//• email: access a user's email address
-	//• write_post: create a new post as a user
-	//• follow: add or remove follows (or mutes) for this user
-	//• messages: send and receive private messages as this user
-	//• export:
-
 	public class Scope
 	{
 		private Scope (string name)

@@ -9,7 +9,7 @@ using Rapptor.Domain;
 namespace Rapptor.Tests.Unit
 {
 	[TestFixture]
-	public class UserServiceSpec
+	public class UsersServiceSpec
 	{
 		[Test]
 		public void UsersServiceCanRetrieveUserInfo()

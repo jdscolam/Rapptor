@@ -9,7 +9,6 @@ namespace Rapptor.Domain
 		public Post()
 		{
 			Annotations = new ConcurrentDictionary<string, dynamic>();
-			Entities = new List<IEntity>();
 		}
 
 		public string Id { get; set; }
@@ -22,7 +21,7 @@ namespace Rapptor.Domain
 		public string ThreadId { get; set; }
 		public int? NumReplies { get; set; }
 		public IDictionary<string, dynamic> Annotations { get; set; }
-		public IEnumerable<IEntity> Entities { get; set; }
+		public Entities Entities { get; set; }
 		public bool? IsDeleted { get; set; }
 	}
 }

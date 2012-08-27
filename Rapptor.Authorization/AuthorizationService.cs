@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Rapptor.Domain.Authorization;
+using Rapptor.Domain.Response;
 using RestSharp;
 using SignalR.Client;
 using SignalR.Client.Hubs;

@@ -40,9 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authorization\AccessResponse.cs" />
+    <Compile Include="Response\AccessResponse.cs" />
     <Compile Include="Authorization\Scope.cs" />
-    <Compile Include="Authorization\Scopes.cs" />
     <Compile Include="Counts.cs" />
     <Compile Include="Description.cs" />
     <Compile Include="Entities.cs" />
@@ -53,6 +52,9 @@
     <Compile Include="Link.cs" />
     <Compile Include="Mention.cs" />
     <Compile Include="Post.cs" />
+    <Compile Include="Request\CreatePostRequest.cs" />
+    <Compile Include="Request\PostStreamGeneralParameters.cs" />
+    <Compile Include="Request\RequestParameter.cs" />
     <Compile Include="Response\TokenInfoResponse.cs" />
     <Compile Include="Source.cs" />
     <Compile Include="User.cs" />

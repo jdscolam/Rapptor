@@ -1,9 +1,11 @@
+using Rapptor.Domain.Request;
+
 namespace Rapptor.Domain
 {
 	public interface IApiCaller
 	{
-		T ApiGet<T>(string endpointToCall) where T : new();
-		T ApiPost<T>(string endpointToCall) where T : new();
-		T ApiDelete<T>(string endpointToCall) where T : new();
+		TReturn ApiGet<TReturn>(string endpointToCall, params RequestParameter[] requestParameters) where TReturn : new();
+		TReturn ApiPost<TReturn>(string endpointToCall, params RequestParameter[] requestParameters) where TReturn : new();
+		TReturn ApiDelete<TReturn>(string endpointToCall) where TReturn : new();
 	}
 }

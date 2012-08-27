@@ -6,11 +6,17 @@ Freedom in the key of C#, or a C# implementation of the App.net API.
 Release Notes
 --
 
+**HUGE UPDATE - Version 0.4**
+-Added full UsersSpec
+-Added full PostsSpec
+-Added integration tests for Posts and Users
+-Fixed minor Domain issues
+
 **Version 0.3**
 - Added TokenSpec
 - Added RestSharpApiCallerSpec
 - Added Rapptor.Api
-- Fixed Domain issues.
+- Fixed Domain issues
 
 **Version 0.2.1 (not released on NuGet)**
 - Added configurable Scopes to Authorization Spec
@@ -86,16 +92,16 @@ Input Needed (and Pull-Requests Accepted)
 --
 
 1. Any suggestions on how to avoid showing a browser for authentication.
-1. Thoughts on using `Post` objects as references instead of `id` when dealing with threads
-1. Possible better implementations when handling images with `Image`
+1. Any thoughts on cleaning up current code as it stands.
+1. Ideas on Filters, Streams, and Subscriptions implementation.
 
 Coming Soon
 --
 
-1. More API calls with tests
+1. More API calls as they are delivered by App.net team
 1. Async authorization calls
 1. Example app
-1. More cool stuff
+1. Super secret feature
 
 Credit Where it is Due
 --
