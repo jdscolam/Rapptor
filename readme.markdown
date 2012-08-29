@@ -36,10 +36,10 @@ Using Rapptor.Api
 1. Initialize an instance of the appropriate API service while passing it an `IApiCaller` (e.g. `TokenService(new RestSharpApiCaller(access_token))`)
 1. Call the appropriate API method (e.g. `tokenService.RetriveCurrentTokenInfo();`)
 
-Using Rapptor.Authentication
+Using Rapptor.Authorization
 --
 
-1. Get Rapptor.Authentication from NuGet
+1. Get Rapptor.Authorization from NuGet
 1. Initialize an instance of the `AuthorizationService` passing in the appropriate parameters
 1. Subscribe to the AccessResponseReceived event (or provide a callback to the `RetrieveAccessToken(...)` call)
 1. Call `authorizationService.ConnectToClearingHouse();`
