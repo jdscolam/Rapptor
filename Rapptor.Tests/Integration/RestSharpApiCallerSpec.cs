@@ -84,6 +84,54 @@ namespace Rapptor.Tests.Integration
 		}
 
 		[Test]
+		public void RestSharpApiCallerCanCreatePostWithAnnotations()
+		{
+			//Setup
+			var annotationValue = new MyAnnotationClass
+				                      {
+					                      Name = "My test parameter annotation"
+										  , Value = 23.5M
+				                      };
+			var annotation = new Annotation
+				                 {
+					                 Type = "net.raptorapp.test.request.parameter"
+									 , Value = annotationValue
+				                 };
+
+			var createPostRequest = new CreatePostRequest
+			{
+				Text = @"@jdscolam this is another #Rapptor #testpost, with links and stuff.  https://github.com/jdscolam/Rapptor and Rapptor NuGet"
+				, ReplyTo = "197934"
+				, Annotations = new List<Annotation> { annotation }
+			};
+			var postStreamGeneralParameters = new PostStreamGeneralParameters { IncludeAnnotations = 1 };
+			IApiCaller restSharpApiCaller = new RestSharpApiCaller(ACCESS_TOKEN);
+
+			//Execute
+			var parameters = PostsService.GetGeneralParameters(postStreamGeneralParameters).ToArray();
+			var postCreated = restSharpApiCaller.ApiPost<CreatePostRequest, Post>("posts/", createPostRequest);
+			
+			//Verify
+			postCreated.ShouldNotBeNull();
+			postCreated.Id.ShouldNotBeNull();
+			
+			postCreated = restSharpApiCaller.ApiGet<Post>("posts/" + postCreated.Id + "/", parameters);
+			
+			postCreated.Annotations.ShouldNotBeNull();
+			postCreated.Annotations.ShouldHaveCount(1);
+			postCreated.Annotations.First().Type.ShouldEqual(annotation.Type);
+
+			var myAnnotationObjectValue = postCreated.Annotations.First().Value as MyAnnotationClass;
+			myAnnotationObjectValue.ShouldNotBeNull();
+			// ReSharper disable PossibleNullReferenceException
+			myAnnotationObjectValue.Name.ShouldEqual(annotationValue.Name);
+			// ReSharper restore PossibleNullReferenceException
+			myAnnotationObjectValue.Value.ShouldEqual(annotationValue.Value);
+
+			//Teardown
+		}
+
+		[Test]
 		public void RestSharpApiCallerCanGetEndpointWithFilterParameters()
 		{
 			//Setup
@@ -106,5 +154,11 @@ namespace Rapptor.Tests.Integration
 
 			//Teardown
 		}
+	}
+
+	public class MyAnnotationClass
+	{
+		public string Name { get; set; }
+		public decimal Value { get; set; }
 	}
 }

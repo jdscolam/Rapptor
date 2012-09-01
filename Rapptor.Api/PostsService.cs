@@ -35,8 +35,6 @@ namespace Rapptor.Api
 
 			if (!string.IsNullOrWhiteSpace(createPostRequest.Text)) requestParameters.Add(new RequestParameter { Name = "text", Value = createPostRequest.Text });
 			if (!string.IsNullOrWhiteSpace(createPostRequest.ReplyTo)) requestParameters.Add(new RequestParameter { Name = "reply_to", Value = createPostRequest.ReplyTo });
-			if (createPostRequest.Annotations != null) requestParameters.Add(new RequestParameter { Name = "annotations", Value = createPostRequest.Annotations });
-			if (createPostRequest.Links != null) requestParameters.Add(new RequestParameter { Name = "links", Value = createPostRequest.Links });
 
 			return requestParameters.Count > 0 ? requestParameters : null;
 		}
@@ -59,6 +57,9 @@ namespace Rapptor.Api
 			if (postStreamGeneralParameters.IncludeUser.HasValue) generalParameters.Add(new RequestParameter { Name = "include_user", Value = postStreamGeneralParameters.IncludeUser });
 			if (postStreamGeneralParameters.IncludeAnnotations.HasValue) generalParameters.Add(new RequestParameter { Name = "include_annotations", Value = postStreamGeneralParameters.IncludeAnnotations });
 			if (postStreamGeneralParameters.IncludeReplies.HasValue) generalParameters.Add(new RequestParameter { Name = "include_replies", Value = postStreamGeneralParameters.IncludeReplies });
+			if (postStreamGeneralParameters.IncludeMuted.HasValue) generalParameters.Add(new RequestParameter { Name = "include_muted", Value = postStreamGeneralParameters.IncludeMuted });
+			if (postStreamGeneralParameters.IncludeDeleted.HasValue) generalParameters.Add(new RequestParameter { Name = "include_deleted", Value = postStreamGeneralParameters.IncludeDeleted });
+			if (postStreamGeneralParameters.IncludeDirectedPosts.HasValue) generalParameters.Add(new RequestParameter { Name = "include_directed_posts", Value = postStreamGeneralParameters.IncludeDirectedPosts });
 
 			return generalParameters.Count > 0 ? generalParameters : null;
 		}
@@ -70,11 +71,7 @@ namespace Rapptor.Api
 		/// <returns></returns>
 		public Post CreatePost(CreatePostRequest createPostRequest)
 		{
-			var postRequestParameters = GetPostRequestParameters(createPostRequest);
-
-			var post = postRequestParameters != null 
-				? _apiCaller.ApiPost<Post>(POSTS_ENDPOINT, postRequestParameters.ToArray()) 
-				: _apiCaller.ApiPost<Post>(POSTS_ENDPOINT);
+			var post = _apiCaller.ApiPost<CreatePostRequest, Post>(POSTS_ENDPOINT, createPostRequest);
 
 			return post;
 		}

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using Newtonsoft.Json;
 
 namespace Rapptor.Domain
 {
@@ -11,14 +11,15 @@ namespace Rapptor.Domain
 	    public Description Description { get; set; }
 		public string Timezone { get; set; }
 	    public string Locale { get; set; }
-	    public WebImage AvatarImage { get; set; }
-	    public WebImage CoverImage { get; set; }
 	    public string Type { get; set; }
-	    public DateTime? CreatedAt { get; set; }
 	    public Counts Counts { get; set; }
-	    public dynamic AppData { get; set; }
-	    public bool? FollowsYou { get; set; }
-	    public bool? YouFollow { get; set; }
-	    public bool? YouMuted { get; set; }
+	    
+		[JsonProperty("avatar_image")] public WebImage AvatarImage { get; set; }
+		[JsonProperty("cover_image")] public WebImage CoverImage { get; set; }
+		[JsonProperty("created_at")] public DateTime? CreatedAt { get; set; }
+	    [JsonProperty("app_data")] public dynamic AppData { get; set; }
+		[JsonProperty("follows_you")] public bool? FollowsYou { get; set; }
+		[JsonProperty("you_follow")] public bool? YouFollow { get; set; }
+		[JsonProperty("you_muted")] public bool? YouMuted { get; set; }
     }
 }

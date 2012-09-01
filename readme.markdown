@@ -6,6 +6,12 @@ Freedom in the key of C#, or a C# implementation of the App.net API.
 Release Notes
 --
 
+**ANNOTATIONS! - Version 0.5**
+- Added fully dynamic Post Annotations
+- NOTICE: Added dependency on Json.Net (unavoidable without lots of extra work)
+- Added ResponseEnvelope to RestSharpApiCaller
+- Fixed minor Domain issues
+
 **HUGE UPDATE - Version 0.4**
 - Added full UsersSpec
 - Added full PostsSpec
@@ -35,6 +41,43 @@ Using Rapptor.Api
 1. Get Rapptor.Api from NuGet
 1. Initialize an instance of the appropriate API service while passing it an `IApiCaller` (e.g. `TokenService(new RestSharpApiCaller(access_token))`)
 1. Call the appropriate API method (e.g. `tokenService.RetriveCurrentTokenInfo();`)
+
+Using Post Annotations
+--
+
+1. Create a new `Annotation`
+1. Set it's `Type` equal to the reversed url of your choice 
+1. Set it's `Value` property to whatever class/value you want (`Annotations` are limited to 8k)
+1. Add your new `Annotation` to a `List<Annotation>`
+1. Create a new `CreatePostRequest` and set it's `Annotations` property to your `List<Annotation`
+1. Call `postService.CreatePost` with your `CreatePostRequest`
+1. Call `postService.Get(postId)` to retrieve your post with its new annotation.
+
+***NOTE: Some Types are reserved, see the API for more information: https://github.com/appdotnet/api-spec/blob/master/annotations.md***
+
+***Annotations Example***
+
+```c#
+var annotationValue = new MyAnnotationClass
+				            {
+					            Name = "My test parameter annotation"
+								, Value = 23.5M
+				            };
+var annotation = new Annotation
+				        {
+					        Type = "net.raptorapp.test.request.parameter"
+							, Value = annotationValue
+				        };
+
+var createPostRequest = new CreatePostRequest
+{
+	Text = @"@jdscolam this is another #Rapptor #testpost, with links and stuff.  https://github.com/jdscolam/Rapptor and Rapptor NuGet"
+	, ReplyTo = "197934"
+	, Annotations = new List<Annotation> { annotation }
+};
+
+var myNewPost = postService.CreatePost(createPostRequest);
+```
 
 Using Rapptor.Authorization
 --
@@ -108,6 +151,7 @@ Credit Where it is Due
 --
 
 SignalR Clearing House Hub curtousey of Frank Wanicka, @fwanicka
+JsonDotNetSerializer inital version Copyright 2010 John Sheehan
 
 Bottom Line
 --

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Rapptor.Domain.Request
 {
@@ -6,12 +7,11 @@ namespace Rapptor.Domain.Request
 	{
 		public CreatePostRequest()
 		{
-			Links = new List<Link>();
+			Annotations = new List<Annotation>();
 		}
 
-		public string Text { get; set; }
-		public string ReplyTo { get; set; }
-		public dynamic Annotations { get; set; }
-		public List<Link> Links { get; set; }
+		[JsonProperty("text")] public string Text { get; set; }
+		[JsonProperty("reply_to")] public string ReplyTo { get; set; }
+		[JsonProperty("annotations")] public List<Annotation> Annotations { get; set; }
 	}
 }

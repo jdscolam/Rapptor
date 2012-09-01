@@ -18,7 +18,7 @@ namespace Rapptor.Api.ApiCaller
 			_accessToken = accessToken;
 			
 			_apiClient = new RestClient(API_BASE);
-			//_apiClient.AddDefaultHeader("Authorization", "Bearer=" + _accessToken);
+			_apiClient.AddHandler("application/json", new JsonDotNetSerializer());
 		}
 
 		private static void ProcessRequestParameters(IRestRequest request, IEnumerable<RequestParameter> requestParameters)
@@ -31,13 +31,17 @@ namespace Rapptor.Api.ApiCaller
 
 		public TReturn ApiGet<TReturn>(string endpointToCall, params RequestParameter[] requestParameters) where TReturn : new()
 		{
-			var request = new RestRequest(endpointToCall, Method.GET) {RootElement = "data"};
+			var request = new RestRequest(endpointToCall, Method.GET)
+				              {
+					             RequestFormat = DataFormat.Json
+								  , JsonSerializer = new JsonDotNetSerializer()
+				              };
 			request.AddParameter("access_token", _accessToken);
 
 			if (requestParameters != null)
 				ProcessRequestParameters(request, requestParameters);
 
-			var response = _apiClient.Execute<TReturn>(request);
+			var response = _apiClient.Execute<ResponseEnvelope<TReturn>>(request);
 
 			if(response.ErrorException != null)
 				throw response.ErrorException;
@@ -45,18 +49,27 @@ namespace Rapptor.Api.ApiCaller
 			if(response.ErrorMessage != null)
 				throw new Exception(string.Format("Api Get of type {0} to endpoint {1} failed with message {2}", typeof(TReturn), API_BASE + endpointToCall, response.ErrorMessage));
 
-			return response.Data;
+			return response.Data.Data;
 		}
 
-		public TReturn ApiPost<TReturn>(string endpointToCall, params RequestParameter[] requestParameters) where TReturn : new()
+		public TReturn ApiPost<TBody, TReturn>(string endpointToCall, TBody body = null, params RequestParameter[] requestParameters) where TReturn : new() where TBody : class, new()
 		{
-			var request = new RestRequest(endpointToCall, Method.POST) { RootElement = "data" };
-			request.AddParameter("access_token", _accessToken);
+			var request = new RestRequest(endpointToCall, Method.POST)
+				              {
+					             RequestFormat = DataFormat.Json
+								  , JsonSerializer = new JsonDotNetSerializer()
+				              };
+			request.JsonSerializer = new JsonDotNetSerializer();
+			request.AddHeader("Content-Type", "application/json");
+			request.AddHeader("Authorization", "Bearer " + _accessToken);
 
-			if(requestParameters != null)
+			if(body != null)
+				request.AddBody(body);
+
+			if (requestParameters != null)
 				ProcessRequestParameters(request, requestParameters);
-			
-			var response = _apiClient.Execute<TReturn>(request);
+
+			var response = _apiClient.Execute<ResponseEnvelope<TReturn>>(request);
 
 			if (response.ErrorException != null)
 				throw response.ErrorException;
@@ -64,15 +77,26 @@ namespace Rapptor.Api.ApiCaller
 			if (response.ErrorMessage != null)
 				throw new Exception(string.Format("Api Post of type {0} to endpoint {1} failed with message {2}", typeof(TReturn), API_BASE + endpointToCall, response.ErrorMessage));
 
-			return response.Data;
+			return response.Data.Data;
+		}
+
+		public TReturn ApiPost<TReturn>(string endpointToCall, params RequestParameter[] requestParameters) where TReturn : new()
+		{
+			var response = ApiPost<object, TReturn>(endpointToCall, requestParameters);
+
+			return response;
 		}
 
 		public TReturn ApiDelete<TReturn>(string endpointToCall) where TReturn : new()
 		{
-			var request = new RestRequest(endpointToCall, Method.POST) { RootElement = "data" };
+			var request = new RestRequest(endpointToCall, Method.DELETE) 
+				              {
+					             RequestFormat = DataFormat.Json
+								  , JsonSerializer = new JsonDotNetSerializer()
+				              };
 			request.AddParameter("access_token", _accessToken);
 
-			var response = _apiClient.Execute<TReturn>(request);
+			var response = _apiClient.Execute<ResponseEnvelope<TReturn>>(request);
 
 			if (response.ErrorException != null)
 				throw response.ErrorException;
@@ -80,7 +104,7 @@ namespace Rapptor.Api.ApiCaller
 			if (response.ErrorMessage != null)
 				throw new Exception(string.Format("Api Delete of type {0} to endpoint {1} failed with message {2}", typeof(TReturn), API_BASE + endpointToCall, response.ErrorMessage));
 
-			return response.Data;
+			return response.Data.Data;
 		}
 	}
 }

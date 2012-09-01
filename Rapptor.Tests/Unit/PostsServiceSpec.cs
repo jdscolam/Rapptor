@@ -22,12 +22,6 @@ namespace Rapptor.Tests.Unit
 				                        {
 											Text = @"@jdscolam this is a test #post, with links and stuff.  https://github.com/jdscolam/Rapptor and Rapptor NuGet"
 											, ReplyTo = "197934"
-											, Links = new List<Link> { new Link
-												                           {
-													                           Pos = 94
-																			   , Text = "Rapptor NuGet"
-																			   , Url = @"http://www.nuget.org/packages?q=rapptor"
-												                           }}
 				                        };
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
@@ -36,7 +30,6 @@ namespace Rapptor.Tests.Unit
 						         Id = "1"
 								 , CreatedAt = createdAt
 								 , Text = createPostRequest.Text
-								 , Entities = new Entities { Links = createPostRequest.Links}
 								 , ReplyTo = createPostRequest.ReplyTo
 					         });
 
@@ -50,9 +43,6 @@ namespace Rapptor.Tests.Unit
 			postCreated.CreatedAt.ShouldEqual(createdAt);
 			postCreated.Text.ShouldNotBeNull();
 			postCreated.Text.ShouldEqual(createPostRequest.Text);
-			postCreated.Entities.ShouldNotBeNull();
-			postCreated.Entities.Links.ShouldNotBeNull();
-			postCreated.Entities.Links.ShouldContain(createPostRequest.Links.First());
 			postCreated.ReplyTo.ShouldNotBeNull();
 			postCreated.ReplyTo.ShouldEqual(createPostRequest.ReplyTo);
 
@@ -304,7 +294,7 @@ namespace Rapptor.Tests.Unit
 		public void PostsServiceCanRetrieveCurrentUsersStreamFilteredByPostStreamGeneralParameters()
 		{
 			//Setup
-			var postStreamGeneralParameters = new PostStreamGeneralParameters { IncludeUser = true };
+			var postStreamGeneralParameters = new PostStreamGeneralParameters { IncludeUser = 1 };
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
 			A.CallTo(apiCaller).WithReturnType<List<Post>>().Returns(new List<Post> { new Post { User = new User() } });
@@ -342,7 +332,7 @@ namespace Rapptor.Tests.Unit
 		public void PostsServiceCanRetrieveGlobalStreamFilteredByPostStreamGeneralParameters()
 		{
 			//Setup
-			var postStreamGeneralParameters = new PostStreamGeneralParameters { IncludeUser = true };
+			var postStreamGeneralParameters = new PostStreamGeneralParameters { IncludeUser = 1 };
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
 			A.CallTo(apiCaller).WithReturnType<List<Post>>().Returns(new List<Post> { new Post { User = new User() } });
@@ -407,7 +397,7 @@ namespace Rapptor.Tests.Unit
 		{
 			//Setup
 			const string hashtag = "Test";
-			var postStreamGeneralParameters = new PostStreamGeneralParameters { IncludeUser = true };
+			var postStreamGeneralParameters = new PostStreamGeneralParameters { IncludeUser = 1 };
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
 			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.TAG_ENDPOINT + hashtag + "/"))

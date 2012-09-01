@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Rapptor.Domain
 {
@@ -14,9 +15,10 @@ namespace Rapptor.Domain
 
 		public string Id { get; set; }
 		public string Name { get; set; }
-		public List<string> UserIds { get; set; }
 		public List<string> Hashtags { get; set; }
-		public List<string> LinkDomains { get; set; }
-		public List<string> MentionUserIds { get; set; }
+		
+		[JsonProperty("user_ids")] public List<string> UserIds { get; set; }
+		[JsonProperty("link_domains")] public List<string> LinkDomains { get; set; }
+		[JsonProperty("mention_user_ids")] public List<string> MentionUserIds { get; set; }
 	}
 }
