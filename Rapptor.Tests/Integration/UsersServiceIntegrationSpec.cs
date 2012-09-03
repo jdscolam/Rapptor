@@ -33,7 +33,25 @@ namespace Rapptor.Tests.Integration
 		public void UsersServiceCanRetrieveFollowersByUserId()
 		{
 			//Setup
-			const string userId = "1";
+			const string userId = "1";	//NOTE:  This is @dalton's userId so it will take FOREVER to return, but it will return.
+			var restSharpApiCaller = new RestSharpApiCaller(ACCESS_TOKEN);
+			var usersService = new UsersService(restSharpApiCaller);
+
+			//Execute
+			var followers = usersService.GetFollowers(userId).ToList();
+
+			//Verify
+			followers.ShouldNotBeNull();
+			followers.Count().ShouldBeGreaterThan(0);
+
+			//Teardown
+		}
+
+		[Test]
+		public void UsersServiceCanRetrieveFollowersByUsername()
+		{
+			//Setup
+			const string userId = "@jdscolam";
 			var restSharpApiCaller = new RestSharpApiCaller(ACCESS_TOKEN);
 			var usersService = new UsersService(restSharpApiCaller);
 
