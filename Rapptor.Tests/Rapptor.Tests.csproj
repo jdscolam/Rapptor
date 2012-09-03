@@ -83,8 +83,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integration\RestSharpApiCallerSpec.cs" />
-    <Compile Include="Integration\AuthorizationSpec.cs" />
+    <Compile Include="Integration\RestSharpApiCallerIntegrationSpec.cs" />
+    <Compile Include="Integration\AuthorizationIntegrationSpec.cs" />
+    <Compile Include="Integration\UsersServiceIntegrationSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\PostsServiceSpec.cs" />
     <Compile Include="Unit\TokenServiceSpec.cs" />

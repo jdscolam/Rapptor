@@ -59,7 +59,6 @@ namespace Rapptor.Api.ApiCaller
 					             RequestFormat = DataFormat.Json
 								  , JsonSerializer = new JsonDotNetSerializer()
 				              };
-			request.JsonSerializer = new JsonDotNetSerializer();
 			request.AddHeader("Content-Type", "application/json");
 			request.AddHeader("Authorization", "Bearer " + _accessToken);
 

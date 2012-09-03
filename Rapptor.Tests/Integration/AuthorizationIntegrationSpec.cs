@@ -8,7 +8,7 @@ using Rapptor.Domain.Authorization;
 namespace Rapptor.Tests.Integration
 {
 	[TestFixture]
-	public class AuthorizationSpec
+	public class AuthorizationIntegrationSpec
 	{
 		private const string CLIENT_ID = "[INSERT CLIENT_ID HERE!]";
 		private const string CLIENT_SECRET = "[INSERT CLIENT_SECRET HERE!]";

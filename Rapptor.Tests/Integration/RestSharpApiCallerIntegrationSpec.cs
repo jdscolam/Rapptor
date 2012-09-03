@@ -11,7 +11,7 @@ using Rapptor.Domain.Response;
 namespace Rapptor.Tests.Integration
 {
 	[TestFixture]
-	public class RestSharpApiCallerSpec
+	public class RestSharpApiCallerIntegrationSpec
 	{
 		private const string ACCESS_TOKEN = "[INSERT ACCESS TOKEN HERE!]";
 
