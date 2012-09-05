@@ -24,5 +24,6 @@ namespace Rapptor.Domain
 		[JsonProperty("thread_id")] public string ThreadId { get; set; }
 		[JsonProperty("num_replies")] public int? NumReplies { get; set; }
 		[JsonProperty("is_deleted")] public bool? IsDeleted { get; set; }
+		[JsonProperty("machine_only")] public bool? MachineOnly { get; set; }
 	}
 }

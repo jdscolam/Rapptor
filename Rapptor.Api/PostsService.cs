@@ -56,6 +56,7 @@ namespace Rapptor.Api
 			if (postStreamGeneralParameters.Count.HasValue) generalParameters.Add(new RequestParameter { Name = "count", Value = postStreamGeneralParameters.Count });
 			if (postStreamGeneralParameters.IncludeUser.HasValue) generalParameters.Add(new RequestParameter { Name = "include_user", Value = postStreamGeneralParameters.IncludeUser });
 			if (postStreamGeneralParameters.IncludeAnnotations.HasValue) generalParameters.Add(new RequestParameter { Name = "include_annotations", Value = postStreamGeneralParameters.IncludeAnnotations });
+			if (postStreamGeneralParameters.IncludeMachine.HasValue) generalParameters.Add(new RequestParameter { Name = "include_machine", Value = postStreamGeneralParameters.IncludeMachine });
 			if (postStreamGeneralParameters.IncludeReplies.HasValue) generalParameters.Add(new RequestParameter { Name = "include_replies", Value = postStreamGeneralParameters.IncludeReplies });
 			if (postStreamGeneralParameters.IncludeMuted.HasValue) generalParameters.Add(new RequestParameter { Name = "include_muted", Value = postStreamGeneralParameters.IncludeMuted });
 			if (postStreamGeneralParameters.IncludeDeleted.HasValue) generalParameters.Add(new RequestParameter { Name = "include_deleted", Value = postStreamGeneralParameters.IncludeDeleted });

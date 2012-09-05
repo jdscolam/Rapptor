@@ -6,6 +6,9 @@ Freedom in the key of C#, or a C# implementation of the App.net API.
 Release Notes
 --
 
+**Machine Only - Version 0.5**
+- Added Machine only posts and post filter
+
 **ANNOTATIONS! - Version 0.5**
 - Added fully dynamic Post Annotations
 - NOTICE: Added dependency on Json.Net (unavoidable without lots of extra work)
