@@ -29,14 +29,14 @@ namespace Rapptor.Api.ApiCaller
 			}
 		}
 
-		public TReturn ApiGet<TReturn>(string endpointToCall, params RequestParameter[] requestParameters) where TReturn : new()
+		public TReturn ApiGet<TReturn>(string endpointToCall, string accessToken = null, params RequestParameter[] requestParameters) where TReturn : new()
 		{
 			var request = new RestRequest(endpointToCall, Method.GET)
 				              {
 					             RequestFormat = DataFormat.Json
 								  , JsonSerializer = new JsonDotNetSerializer()
 				              };
-			request.AddParameter("access_token", _accessToken);
+			request.AddParameter("access_token", accessToken ?? _accessToken);
 
 			if (requestParameters != null)
 				ProcessRequestParameters(request, requestParameters);
@@ -52,7 +52,7 @@ namespace Rapptor.Api.ApiCaller
 			return response.Data.Data;
 		}
 
-		public TReturn ApiPost<TBody, TReturn>(string endpointToCall, TBody body = null, params RequestParameter[] requestParameters) where TReturn : new() where TBody : class, new()
+		public TReturn ApiPost<TBody, TReturn>(string endpointToCall, TBody body = null, string accessToken = null, params RequestParameter[] requestParameters) where TReturn : new() where TBody : class, new()
 		{
 			var request = new RestRequest(endpointToCall, Method.POST)
 				              {
@@ -60,7 +60,7 @@ namespace Rapptor.Api.ApiCaller
 								  , JsonSerializer = new JsonDotNetSerializer()
 				              };
 			request.AddHeader("Content-Type", "application/json");
-			request.AddHeader("Authorization", "Bearer " + _accessToken);
+			request.AddHeader("Authorization", "Bearer " + (accessToken ?? _accessToken));	//wrapped in parenthesis in order to evaluate null check first.
 
 			if(body != null)
 				request.AddBody(body);
@@ -79,21 +79,21 @@ namespace Rapptor.Api.ApiCaller
 			return response.Data.Data;
 		}
 
-		public TReturn ApiPost<TReturn>(string endpointToCall, params RequestParameter[] requestParameters) where TReturn : new()
+		public TReturn ApiPost<TReturn>(string endpointToCall, string accessToken = null, params RequestParameter[] requestParameters) where TReturn : new()
 		{
-			var response = ApiPost<object, TReturn>(endpointToCall, requestParameters);
+			var response = ApiPost<object, TReturn>(endpointToCall, requestParameters, accessToken);
 
 			return response;
 		}
 
-		public TReturn ApiDelete<TReturn>(string endpointToCall) where TReturn : new()
+		public TReturn ApiDelete<TReturn>(string endpointToCall, string accessToken = null) where TReturn : new()
 		{
 			var request = new RestRequest(endpointToCall, Method.DELETE) 
 				              {
 					             RequestFormat = DataFormat.Json
 								  , JsonSerializer = new JsonDotNetSerializer()
 				              };
-			request.AddParameter("access_token", _accessToken);
+			request.AddParameter("access_token", accessToken ?? _accessToken);
 
 			var response = _apiClient.Execute<ResponseEnvelope<TReturn>>(request);
 
