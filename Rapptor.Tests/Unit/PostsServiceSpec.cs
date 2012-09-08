@@ -6,6 +6,7 @@ using FubuTestingSupport;
 using NUnit.Framework;
 using Rapptor.Api;
 using Rapptor.Domain;
+using Rapptor.Domain.Api;
 using Rapptor.Domain.Request;
 
 namespace Rapptor.Tests.Unit
@@ -56,7 +57,7 @@ namespace Rapptor.Tests.Unit
 			const string postId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<Post>(PostsService.POSTS_ENDPOINT + postId + "/")).Returns(new Post { Id = "1" });
+			A.CallTo(() => apiCaller.ApiGet<Post>(PostsService.POSTS_ENDPOINT + postId + "/", null)).Returns(new Post { Id = "1" });
 
 			//Execute
 			var post = postsService.RetrievePost(postId);
@@ -76,7 +77,7 @@ namespace Rapptor.Tests.Unit
 			const string postId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiDelete<Post>(PostsService.POSTS_ENDPOINT + postId + "/")).Returns(new Post { Id = "1" });
+			A.CallTo(() => apiCaller.ApiDelete<Post>(PostsService.POSTS_ENDPOINT + postId + "/", null)).Returns(new Post { Id = "1" });
 
 			//Execute
 			var deletedPost = postsService.DeletePost(postId);
@@ -97,7 +98,7 @@ namespace Rapptor.Tests.Unit
 			const string postId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPLIES_ACTION)).Returns(new List<Post> {new Post { ReplyTo = "1" } });
+			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPLIES_ACTION, null)).Returns(new List<Post> { new Post { ReplyTo = "1" } });
 
 			//Execute
 			var postReplies = postsService.RetrievePostReplies(postId).ToList();
@@ -145,7 +146,7 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userId + "/" + PostsService.POSTS_ENDPOINT)).Returns(new List<Post> { new Post { User = new User {Id = userId}} });
+			A.CallTo(() => apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userId + "/" + PostsService.POSTS_ENDPOINT, null)).Returns(new List<Post> { new Post { User = new User { Id = userId } } });
 
 			//Execute
 			var posts = postsService.RetrievePostsCreatedByUser(userId).ToList();
@@ -197,7 +198,7 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userId + "/" + PostsService.MENTIONS_ENDPOINT))
+			A.CallTo(() => apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userId + "/" + PostsService.MENTIONS_ENDPOINT, null))
 				.Returns(new List<Post>
 					         {
 						         new Post
@@ -278,7 +279,7 @@ namespace Rapptor.Tests.Unit
 			//Setup
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.STREAM_ENDPOINT)).Returns(new List<Post> { new Post() });
+			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.STREAM_ENDPOINT, null)).Returns(new List<Post> { new Post() });
 
 			//Execute
 			var posts = postsService.RetrieveCurrentUsersStream().ToList();
@@ -316,7 +317,7 @@ namespace Rapptor.Tests.Unit
 			//Setup
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.STREAM_ENDPOINT + PostsService.GLOBAL_ENDPOINT)).Returns(new List<Post> { new Post() });
+			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.STREAM_ENDPOINT + PostsService.GLOBAL_ENDPOINT, null)).Returns(new List<Post> { new Post() });
 
 			//Execute
 			var posts = postsService.RetrieveGlobalStream().ToList();
@@ -352,10 +353,10 @@ namespace Rapptor.Tests.Unit
 		public void PostsServiceCanRetrievePostsWithAGivenHashtag()
 		{
 			//Setup
-			var hashtag = "Test";
+			const string hashtag = "Test";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.TAG_ENDPOINT + hashtag + "/"))
+			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.TAG_ENDPOINT + hashtag + "/", null))
 				.Returns(new List<Post>
 					         {
 						         new Post
@@ -400,7 +401,7 @@ namespace Rapptor.Tests.Unit
 			var postStreamGeneralParameters = new PostStreamGeneralParameters { IncludeUser = 1 };
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.TAG_ENDPOINT + hashtag + "/"))
+			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.TAG_ENDPOINT + hashtag + "/", null))
 				.Returns(new List<Post>
 					         {
 						         new Post

@@ -46,6 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotation.cs" />
+    <Compile Include="Api\IPostsService.cs" />
+    <Compile Include="Api\ITokenService.cs" />
+    <Compile Include="Api\IUsersService.cs" />
     <Compile Include="Response\AccessResponse.cs" />
     <Compile Include="Authorization\Scope.cs" />
     <Compile Include="Counts.cs" />
@@ -53,7 +56,7 @@
     <Compile Include="Entities.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="Hashtag.cs" />
-    <Compile Include="IApiCaller.cs" />
+    <Compile Include="Api\IApiCaller.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="Link.cs" />
     <Compile Include="Mention.cs" />

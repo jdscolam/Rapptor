@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Rapptor.Domain;
+using Rapptor.Domain.Api;
 using Rapptor.Domain.Request;
 
 namespace Rapptor.Api
 {
-	public class PostsService
+	public class PostsService : IPostsService
 	{
 		public const string POSTS_ENDPOINT = "posts/";
 		public const string REPLIES_ACTION = "replies/";
@@ -72,7 +73,7 @@ namespace Rapptor.Api
 		/// <returns></returns>
 		public Post CreatePost(CreatePostRequest createPostRequest)
 		{
-			var post = _apiCaller.ApiPost<CreatePostRequest, Post>(POSTS_ENDPOINT, createPostRequest);
+			var post = _apiCaller.ApiPost<CreatePostRequest, Post>(POSTS_ENDPOINT, null, createPostRequest);
 
 			return post;
 		}
@@ -85,7 +86,7 @@ namespace Rapptor.Api
 		public Post RetrievePost(string postId)
 		{
 			var postIdCallString = postId + "/";
-			var post = _apiCaller.ApiGet<Post>(POSTS_ENDPOINT + postIdCallString);
+			var post = _apiCaller.ApiGet<Post>(POSTS_ENDPOINT + postIdCallString, null);
 
 			return post;
 		}
@@ -98,7 +99,7 @@ namespace Rapptor.Api
 		public Post DeletePost(string postId)
 		{
 			var postIdCallString = postId + "/";
-			var post = _apiCaller.ApiDelete<Post>(POSTS_ENDPOINT + postIdCallString);
+			var post = _apiCaller.ApiDelete<Post>(POSTS_ENDPOINT + postIdCallString, null);
 
 			return post;
 		}
@@ -116,8 +117,8 @@ namespace Rapptor.Api
 			var generalParameters = GetGeneralParameters(postStreamGeneralParameters);
 
 			var posts = generalParameters != null
-				? _apiCaller.ApiGet<List<Post>>(POSTS_ENDPOINT + postIdCallString, requestParameters:generalParameters.ToArray())
-				: _apiCaller.ApiGet<List<Post>>(POSTS_ENDPOINT + postIdCallString);
+				? _apiCaller.ApiGet<List<Post>>(POSTS_ENDPOINT + postIdCallString, null, generalParameters.ToArray())
+				: _apiCaller.ApiGet<List<Post>>(POSTS_ENDPOINT + postIdCallString, null);
 
 			return posts;
 		}
@@ -135,8 +136,8 @@ namespace Rapptor.Api
 			var generalParameters = GetGeneralParameters(postStreamGeneralParameters);
 
 			var posts = generalParameters != null
-				? _apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userIdPostsCallString, requestParameters:generalParameters.ToArray())
-				: _apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userIdPostsCallString);
+				? _apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userIdPostsCallString, null, generalParameters.ToArray())
+				: _apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userIdPostsCallString, null);
 
 			return posts;
 		}
@@ -154,8 +155,8 @@ namespace Rapptor.Api
 			var generalParameters = GetGeneralParameters(postStreamGeneralParameters);
 
 			var posts = generalParameters != null
-				? _apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userIdMentionssCallString, requestParameters:generalParameters.ToArray())
-				: _apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userIdMentionssCallString);
+				? _apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userIdMentionssCallString, null, generalParameters.ToArray())
+				: _apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userIdMentionssCallString, null);
 
 			return posts;
 		}
@@ -174,8 +175,8 @@ namespace Rapptor.Api
 			var generalParameters = GetGeneralParameters(postStreamGeneralParameters);
 
 			var posts = generalParameters != null
-				? _apiCaller.ApiGet<List<Post>>(currentUsersStreamCallString, requestParameters:generalParameters.ToArray())
-				: _apiCaller.ApiGet<List<Post>>(currentUsersStreamCallString);
+				? _apiCaller.ApiGet<List<Post>>(currentUsersStreamCallString, null, generalParameters.ToArray())
+				: _apiCaller.ApiGet<List<Post>>(currentUsersStreamCallString, null);
 
 			return posts;
 		}
@@ -194,8 +195,8 @@ namespace Rapptor.Api
 			var generalParameters = GetGeneralParameters(postStreamGeneralParameters);
 
 			var posts = generalParameters != null
-				? _apiCaller.ApiGet<List<Post>>(globalStreamCallString, requestParameters:generalParameters.ToArray())
-				: _apiCaller.ApiGet<List<Post>>(globalStreamCallString);
+				? _apiCaller.ApiGet<List<Post>>(globalStreamCallString, null, generalParameters.ToArray())
+				: _apiCaller.ApiGet<List<Post>>(globalStreamCallString, null);
 
 			return posts;
 		}
@@ -215,8 +216,8 @@ namespace Rapptor.Api
 			var generalParameters = GetGeneralParameters(postStreamGeneralParameters);
 
 			var posts = generalParameters != null
-				? _apiCaller.ApiGet<List<Post>>(taggedPostsCallString, requestParameters:generalParameters.ToArray())
-				: _apiCaller.ApiGet<List<Post>>(taggedPostsCallString);
+				? _apiCaller.ApiGet<List<Post>>(taggedPostsCallString, null, generalParameters.ToArray())
+				: _apiCaller.ApiGet<List<Post>>(taggedPostsCallString, null);
 
 			return posts;
 		}

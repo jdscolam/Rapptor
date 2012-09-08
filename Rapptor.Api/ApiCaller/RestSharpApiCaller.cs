@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Rapptor.Domain;
+using Rapptor.Domain.Api;
 using Rapptor.Domain.Request;
 using RestSharp;
 
@@ -29,7 +29,7 @@ namespace Rapptor.Api.ApiCaller
 			}
 		}
 
-		public TReturn ApiGet<TReturn>(string endpointToCall, string accessToken = null, params RequestParameter[] requestParameters) where TReturn : new()
+		public TReturn ApiGet<TReturn>(string endpointToCall, string accessToken, params RequestParameter[] requestParameters) where TReturn : new()
 		{
 			var request = new RestRequest(endpointToCall, Method.GET)
 				              {
@@ -52,7 +52,7 @@ namespace Rapptor.Api.ApiCaller
 			return response.Data.Data;
 		}
 
-		public TReturn ApiPost<TBody, TReturn>(string endpointToCall, TBody body = null, string accessToken = null, params RequestParameter[] requestParameters) where TReturn : new() where TBody : class, new()
+		public TReturn ApiPost<TBody, TReturn>(string endpointToCall, string accessToken, TBody body = null, params RequestParameter[] requestParameters) where TReturn : new() where TBody : class, new()
 		{
 			var request = new RestRequest(endpointToCall, Method.POST)
 				              {
@@ -79,14 +79,14 @@ namespace Rapptor.Api.ApiCaller
 			return response.Data.Data;
 		}
 
-		public TReturn ApiPost<TReturn>(string endpointToCall, string accessToken = null, params RequestParameter[] requestParameters) where TReturn : new()
+		public TReturn ApiPost<TReturn>(string endpointToCall, string accessToken, params RequestParameter[] requestParameters) where TReturn : new()
 		{
-			var response = ApiPost<object, TReturn>(endpointToCall, requestParameters, accessToken);
+			var response = ApiPost<object, TReturn>(endpointToCall, accessToken, requestParameters);
 
 			return response;
 		}
 
-		public TReturn ApiDelete<TReturn>(string endpointToCall, string accessToken = null) where TReturn : new()
+		public TReturn ApiDelete<TReturn>(string endpointToCall, string accessToken) where TReturn : new()
 		{
 			var request = new RestRequest(endpointToCall, Method.DELETE) 
 				              {

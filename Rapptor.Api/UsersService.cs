@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Rapptor.Domain;
+using Rapptor.Domain.Api;
 
 namespace Rapptor.Api
 {
-	public class UsersService
+	public class UsersService : IUsersService
 	{
 		public const string USERS_ENDPOINT = "users/";
 		public const string FOLLOW_ACTION = "follow/";
@@ -27,7 +28,7 @@ namespace Rapptor.Api
 		public User RetrieveUser(string userId)
 		{
 			var userIdCallString = userId + "/";
-			var user = _apiCaller.ApiGet<User>(USERS_ENDPOINT + userIdCallString);
+			var user = _apiCaller.ApiGet<User>(USERS_ENDPOINT + userIdCallString, null);
 
 			return user;
 		}
@@ -40,7 +41,7 @@ namespace Rapptor.Api
 		public User FollowUser(string userId)
 		{
 			var userIdCallString = userId + "/" + FOLLOW_ACTION;
-			var user = _apiCaller.ApiPost<User>(USERS_ENDPOINT + userIdCallString);
+			var user = _apiCaller.ApiPost<User>(USERS_ENDPOINT + userIdCallString, null);
 
 			return user;
 		}
@@ -53,7 +54,7 @@ namespace Rapptor.Api
 		public User UnfollowUser(string userId)
 		{
 			var userIdCallString = userId + "/" + FOLLOW_ACTION;
-			var user = _apiCaller.ApiDelete<User>(USERS_ENDPOINT + userIdCallString);
+			var user = _apiCaller.ApiDelete<User>(USERS_ENDPOINT + userIdCallString, null);
 
 			return user;
 		}
@@ -66,7 +67,7 @@ namespace Rapptor.Api
 		public IEnumerable<User> GetUsersBeingFollowed(string userId)
 		{
 			var userIdCallString = userId + "/" + FOLLOWING_ACTION;
-			var users = _apiCaller.ApiGet<List<User>>(USERS_ENDPOINT + userIdCallString);
+			var users = _apiCaller.ApiGet<List<User>>(USERS_ENDPOINT + userIdCallString, null);
 
 			return users;
 		}
@@ -79,7 +80,7 @@ namespace Rapptor.Api
 		public IEnumerable<User> GetFollowers(string userId)
 		{
 			var userIdCallString = userId + "/" + FOLLOWERS_ACTION;
-			var users = _apiCaller.ApiGet<List<User>>(USERS_ENDPOINT + userIdCallString);
+			var users = _apiCaller.ApiGet<List<User>>(USERS_ENDPOINT + userIdCallString, null);
 
 			return users;
 		}
@@ -92,7 +93,7 @@ namespace Rapptor.Api
 		public User MuteUser(string userId)
 		{
 			var userIdCallString = userId + "/" + MUTE_ACTION;
-			var user = _apiCaller.ApiPost<User>(USERS_ENDPOINT + userIdCallString);
+			var user = _apiCaller.ApiPost<User>(USERS_ENDPOINT + userIdCallString, null);
 
 			return user;
 		}
@@ -105,7 +106,7 @@ namespace Rapptor.Api
 		public User UnmuteUser(string userId)
 		{
 			var userIdCallString = userId + "/" + MUTE_ACTION;
-			var user = _apiCaller.ApiDelete<User>(USERS_ENDPOINT + userIdCallString);
+			var user = _apiCaller.ApiDelete<User>(USERS_ENDPOINT + userIdCallString, null);
 
 			return user;
 		}
@@ -117,7 +118,7 @@ namespace Rapptor.Api
 		/// <returns></returns>
 		public IEnumerable<User> GetMutedUsers()
 		{
-			var users = _apiCaller.ApiGet<List<User>>(USERS_ENDPOINT + MUTED_ACTION);
+			var users = _apiCaller.ApiGet<List<User>>(USERS_ENDPOINT + MUTED_ACTION, null);
 
 			return users;
 		}

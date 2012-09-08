@@ -5,6 +5,7 @@ using FubuTestingSupport;
 using NUnit.Framework;
 using Rapptor.Api;
 using Rapptor.Domain;
+using Rapptor.Domain.Api;
 
 namespace Rapptor.Tests.Unit
 {
@@ -18,7 +19,7 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<User>(UsersService.USERS_ENDPOINT + userId + "/")).Returns(new User { Id = "1" });
+			A.CallTo(() => apiCaller.ApiGet<User>(UsersService.USERS_ENDPOINT + userId + "/", null)).Returns(new User { Id = "1" });
 
 			//Execute
 			var userRetrieved = usersService.RetrieveUser(userId);
@@ -37,7 +38,7 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiPost<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOW_ACTION)).Returns(new User { Id = "1", YouFollow = true});
+			A.CallTo(() => apiCaller.ApiPost<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOW_ACTION, null)).Returns(new User { Id = "1", YouFollow = true });
 
 			//Execute
 			var userFollowed = usersService.FollowUser(userId);
@@ -57,7 +58,7 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiDelete<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOW_ACTION)).Returns(new User { Id = "1", YouFollow = false });
+			A.CallTo(() => apiCaller.ApiDelete<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOW_ACTION, null)).Returns(new User { Id = "1", YouFollow = false });
 
 			//Execute
 			var userUnFollowed = usersService.UnfollowUser(userId);
@@ -77,7 +78,7 @@ namespace Rapptor.Tests.Unit
 			const string userId = "me";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOWING_ACTION)).Returns(new List<User> { new User { Id = "1", YouFollow = true } });
+			A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOWING_ACTION, null)).Returns(new List<User> { new User { Id = "1", YouFollow = true } });
 
 			//Execute
 			var usersBeingFollowed = usersService.GetUsersBeingFollowed(userId).ToList();
@@ -100,7 +101,7 @@ namespace Rapptor.Tests.Unit
 			const string userId = "me";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOWERS_ACTION)).Returns(new List<User> { new User { Id = "1", YouFollow = true } });
+			A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOWERS_ACTION, null)).Returns(new List<User> { new User { Id = "1", YouFollow = true } });
 
 			//Execute
 			var followers = usersService.GetFollowers(userId).ToList();
@@ -123,7 +124,7 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiPost<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.MUTE_ACTION)).Returns(new User { Id = "1", YouMuted = true });
+			A.CallTo(() => apiCaller.ApiPost<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.MUTE_ACTION, null)).Returns(new User { Id = "1", YouMuted = true });
 
 			//Execute
 			var userMuted = usersService.MuteUser(userId);
@@ -143,7 +144,7 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiDelete<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.MUTE_ACTION)).Returns(new User { Id = "1", YouMuted = false });
+			A.CallTo(() => apiCaller.ApiDelete<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.MUTE_ACTION, null)).Returns(new User { Id = "1", YouMuted = false });
 
 			//Execute
 			var userUnmuted = usersService.UnmuteUser(userId);
@@ -162,7 +163,7 @@ namespace Rapptor.Tests.Unit
 			//Setup
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + UsersService.MUTED_ACTION)).Returns(new List<User> { new User { Id = "1", YouMuted = true } });
+			A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + UsersService.MUTED_ACTION, null)).Returns(new List<User> { new User { Id = "1", YouMuted = true } });
 
 			//Execute
 			var mutedUsers = usersService.GetMutedUsers().ToList();

@@ -1,9 +1,9 @@
-using Rapptor.Domain;
+using Rapptor.Domain.Api;
 using Rapptor.Domain.Response;
 
 namespace Rapptor.Api
 {
-	public class TokenService
+	public class TokenService : ITokenService
 	{
 		private const string TOKEN_ENDPOINT = "token";
 
@@ -16,7 +16,7 @@ namespace Rapptor.Api
 
 		public TokenInfoResponse RetrieveCurrentTokenInfo()
 		{
-			var tokenResponse = _apiCaller.ApiGet<TokenInfoResponse>(TOKEN_ENDPOINT);
+			var tokenResponse = _apiCaller.ApiGet<TokenInfoResponse>(TOKEN_ENDPOINT, null);
 
 			return tokenResponse;
 		}

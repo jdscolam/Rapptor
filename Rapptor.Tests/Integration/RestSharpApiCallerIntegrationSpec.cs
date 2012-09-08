@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rapptor.Api;
 using Rapptor.Api.ApiCaller;
 using Rapptor.Domain;
+using Rapptor.Domain.Api;
 using Rapptor.Domain.Request;
 using Rapptor.Domain.Response;
 
@@ -22,7 +23,7 @@ namespace Rapptor.Tests.Integration
 			IApiCaller restSharpApiCaller = new RestSharpApiCaller(ACCESS_TOKEN);
 
 			//Execute
-			var tokenInfo = restSharpApiCaller.ApiGet<TokenInfoResponse>("token");
+			var tokenInfo = restSharpApiCaller.ApiGet<TokenInfoResponse>("token", null);
 
 			//Verify
 			tokenInfo.ShouldNotBeNull();
@@ -41,7 +42,7 @@ namespace Rapptor.Tests.Integration
 			IApiCaller restSharpApiCaller = new RestSharpApiCaller(ACCESS_TOKEN);
 
 			//Execute
-			var user = restSharpApiCaller.ApiGet<User>("users/" + userId);
+			var user = restSharpApiCaller.ApiGet<User>("users/" + userId, null);
 
 			//Verify
 			user.ShouldNotBeNull();
@@ -65,7 +66,7 @@ namespace Rapptor.Tests.Integration
 
 			//Execute
 			var parameters = PostsService.GetPostRequestParameters(createPostRequest);
-			var postCreated = restSharpApiCaller.ApiPost<Post>("posts/", requestParameters:parameters.ToArray());
+			var postCreated = restSharpApiCaller.ApiPost<Post>("posts/", null, parameters.ToArray());
 
 			//Verify
 			postCreated.ShouldNotBeNull();
@@ -109,13 +110,13 @@ namespace Rapptor.Tests.Integration
 
 			//Execute
 			var parameters = PostsService.GetGeneralParameters(postStreamGeneralParameters).ToArray();
-			var postCreated = restSharpApiCaller.ApiPost<CreatePostRequest, Post>("posts/", createPostRequest);
+			var postCreated = restSharpApiCaller.ApiPost<CreatePostRequest, Post>("posts/", null, createPostRequest);
 			
 			//Verify
 			postCreated.ShouldNotBeNull();
 			postCreated.Id.ShouldNotBeNull();
 
-			postCreated = restSharpApiCaller.ApiGet<Post>("posts/" + postCreated.Id + "/", requestParameters:parameters);
+			postCreated = restSharpApiCaller.ApiGet<Post>("posts/" + postCreated.Id + "/", null, requestParameters: parameters);
 			
 			postCreated.Annotations.ShouldNotBeNull();
 			postCreated.Annotations.ShouldHaveCount(1);
@@ -141,7 +142,7 @@ namespace Rapptor.Tests.Integration
 			var requestParameters = PostsService.GetGeneralParameters(postStreamGeneralParameters);
 
 			//Execute
-			var filteredPosts = restSharpApiCaller.ApiGet<List<Post>>("posts/" + postId + "/" + PostsService.REPLIES_ACTION, requestParameters:requestParameters.ToArray());
+			var filteredPosts = restSharpApiCaller.ApiGet<List<Post>>("posts/" + postId + "/" + PostsService.REPLIES_ACTION, null, requestParameters.ToArray());
 
 			//Verify
 			filteredPosts.ShouldNotBeNull();
