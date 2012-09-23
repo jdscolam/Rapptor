@@ -28,7 +28,7 @@ using RestSharp;
 using RestSharp.Deserializers;
 using RestSharp.Serializers;
 
-namespace Rapptor.Api.ApiCaller
+namespace Rapptor.Api.ApiCaller.RestSharp
 {
 	/// <summary>
 	/// Default JSON serializer for request bodies

@@ -2,7 +2,6 @@
 using FubuTestingSupport;
 using NUnit.Framework;
 using Rapptor.Api;
-using Rapptor.Domain;
 using Rapptor.Domain.Api;
 
 namespace Rapptor.Tests.Unit

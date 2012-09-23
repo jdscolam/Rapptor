@@ -85,7 +85,7 @@
   <ItemGroup>
     <Compile Include="Integration\RestSharpApiCallerIntegrationSpec.cs" />
     <Compile Include="Integration\AuthorizationIntegrationSpec.cs" />
-    <Compile Include="Integration\UsersServiceIntegrationSpec.cs" />
+    <Compile Include="Integration\RestSharpUsersServiceIntegrationSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\PostsServiceSpec.cs" />
     <Compile Include="Unit\TokenServiceSpec.cs" />
@@ -95,6 +95,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Rapptor.Api.ApiCaller.RestSharp\Rapptor.Api.ApiCaller.RestSharp.csproj">
+      <Project>{360C0D53-BB7A-4D0B-92BF-D28E9ABC86FA}</Project>
+      <Name>Rapptor.Api.ApiCaller.RestSharp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rapptor.Api\Rapptor.Api.csproj">
       <Project>{CBB50B80-D9C3-4F26-A9B0-D69CE28FD4AD}</Project>
       <Name>Rapptor.Api</Name>

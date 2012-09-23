@@ -1,4 +1,4 @@
-namespace Rapptor.Api.ApiCaller
+namespace Rapptor.Domain.Response
 {
 	public class Metadata
 	{

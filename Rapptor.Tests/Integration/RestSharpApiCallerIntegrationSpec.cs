@@ -3,7 +3,7 @@ using System.Linq;
 using FubuTestingSupport;
 using NUnit.Framework;
 using Rapptor.Api;
-using Rapptor.Api.ApiCaller;
+using Rapptor.Api.ApiCaller.RestSharp;
 using Rapptor.Domain;
 using Rapptor.Domain.Api;
 using Rapptor.Domain.Request;

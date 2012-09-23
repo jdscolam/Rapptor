@@ -2,12 +2,12 @@
 using FubuTestingSupport;
 using NUnit.Framework;
 using Rapptor.Api;
-using Rapptor.Api.ApiCaller;
+using Rapptor.Api.ApiCaller.RestSharp;
 
 namespace Rapptor.Tests.Integration
 {
 	[TestFixture]
-	public class UsersServiceIntegrationSpec
+	public class RestSharpUsersServiceIntegrationSpec
 	{
 		private const string ACCESS_TOKEN = "[INSERT ACCESS TOKEN HERE!]";
 

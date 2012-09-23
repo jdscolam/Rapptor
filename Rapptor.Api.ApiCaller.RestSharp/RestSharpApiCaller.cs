@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using Rapptor.Domain.Api;
 using Rapptor.Domain.Request;
+using Rapptor.Domain.Response;
 using RestSharp;
 
-namespace Rapptor.Api.ApiCaller
+namespace Rapptor.Api.ApiCaller.RestSharp
 {
 	public class RestSharpApiCaller : IApiCaller
 	{
