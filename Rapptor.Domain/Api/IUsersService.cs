@@ -58,5 +58,7 @@ namespace Rapptor.Domain.Api
 		/// </summary>
 		/// <returns></returns>
 		IEnumerable<User> GetMutedUsers();
+
+	    IEnumerable<User> ListUsersWhoHaveStarredPost(string postId);
 	}
 }

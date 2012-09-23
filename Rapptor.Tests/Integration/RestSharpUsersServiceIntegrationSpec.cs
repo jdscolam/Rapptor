@@ -64,5 +64,24 @@ namespace Rapptor.Tests.Integration
 
 			//Teardown
 		}
+
+	    [Test]
+	    public void UsersServiceCanListUsersWhoHaveStarredAPost()
+	    {
+	        //Setup
+	        const string postId = "1";
+	        var restSharpApiCaller = new RestSharpApiCaller(ACCESS_TOKEN);
+	        var usersService = new UsersService(restSharpApiCaller);
+
+	        //Execute
+	        var starringUsers = usersService.ListUsersWhoHaveStarredPost(postId).ToList();
+
+	        //Verify
+	        starringUsers.ShouldNotBeNull();
+	        starringUsers.Count.ShouldBeGreaterThan(0);
+
+
+	        //Teardown
+	    }
 	}
 }

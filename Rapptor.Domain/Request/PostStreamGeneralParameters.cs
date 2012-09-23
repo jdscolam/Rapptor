@@ -11,6 +11,8 @@
 		public int? IncludeAnnotations { get; set; }
 		public int? IncludeMachine { get; set; }
 		public int? IncludeReplies { get; set; }
-		public int? IncludeUser { get; set; }
+        public int? IncludeUser { get; set; }
+        public int? IncludeStarredBy { get; set; }
+        public int? IncludeReposters { get; set; }
 	}
 }

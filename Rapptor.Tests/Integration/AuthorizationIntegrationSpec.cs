@@ -22,7 +22,8 @@ namespace Rapptor.Tests.Integration
 		{
 			_scopes = new List<Scope>
 				          {
-					          Scope.Stream
+					          Scope.Basic
+                              , Scope.Stream
 					          , Scope.Email
 					          , Scope.WritePost
 					          , Scope.Follow

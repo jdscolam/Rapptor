@@ -439,5 +439,119 @@ namespace Rapptor.Tests.Unit
 
 			//Teardown
 		}
+
+	    [Test]
+	    public void PostsServiceCanStarAPost()
+	    {
+	        //Setup
+	        const string postId = "1";
+	        var apiCaller = A.Fake<IApiCaller>();
+	        var postsService = new PostsService(apiCaller);
+            A.CallTo(() => apiCaller.ApiPost<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.STARS_ACTION, null)).Returns(new Post { YouStarred = true });
+
+	        //Execute
+	        var starredPost = postsService.StarPost(postId);
+
+	        //Verify
+	        starredPost.ShouldNotBeNull();
+            starredPost.YouStarred.HasValue.ShouldBeTrue();
+            // ReSharper disable PossibleInvalidOperationException
+            starredPost.YouStarred.Value.ShouldBeTrue();
+            // ReSharper restore PossibleInvalidOperationException
+
+	        //Teardown
+	    }
+
+        [Test]
+        public void PostsServiceCanUnstarAPost()
+        {
+            //Setup
+            const string postId = "1";
+            var apiCaller = A.Fake<IApiCaller>();
+            var postsService = new PostsService(apiCaller);
+            A.CallTo(() => apiCaller.ApiDelete<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.STARS_ACTION, null)).Returns(new Post { YouStarred = false });
+
+            //Execute
+            var unstarredPost = postsService.UnstarPost(postId);
+
+            //Verify
+            unstarredPost.ShouldNotBeNull();
+            unstarredPost.YouStarred.HasValue.ShouldBeTrue();
+            // ReSharper disable PossibleInvalidOperationException
+            unstarredPost.YouStarred.Value.ShouldBeFalse();
+            // ReSharper restore PossibleInvalidOperationException
+
+            //Teardown
+        }
+
+        [Test]
+        public void PostsServiceCanRetrievePostsStarredByAUser()
+        {
+            //Setup
+            const string userId = "me";
+            var apiCaller = A.Fake<IApiCaller>();
+            var postsService = new PostsService(apiCaller);
+            A.CallTo(() => apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userId + "/" + PostsService.STARS_ACTION, null))
+                .Returns(new List<Post> { new Post { YouStarred = true } });
+
+            //Execute
+            var posts = postsService.RetrievePostsStarredByUser(userId).ToList();
+
+            //Verify
+            posts.ShouldNotBeNull();
+            posts.ShouldHaveCount(1);
+            posts.First().YouStarred.HasValue.ShouldBeTrue();
+            // ReSharper disable PossibleInvalidOperationException
+            posts.First().YouStarred.Value.ShouldBeTrue();
+            // ReSharper restore PossibleInvalidOperationException
+
+            //Teardown
+        }
+
+        [Test]
+        public void PostsServiceCanRepostAPost()
+        {
+            //Setup
+            const string postId = "1";
+            var apiCaller = A.Fake<IApiCaller>();
+            var postsService = new PostsService(apiCaller);
+            A.CallTo(() => apiCaller.ApiPost<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPOST_ACTION, null)).Returns(new Post { RepostOf = new Post {Id = postId, YouReposted = true} });
+
+            //Execute
+            var repost = postsService.Repost(postId);
+
+            //Verify
+            repost.ShouldNotBeNull();
+            repost.RepostOf.ShouldNotBeNull();
+            repost.RepostOf.Id.ShouldEqual(postId);
+            // ReSharper disable PossibleInvalidOperationException
+            repost.RepostOf.YouReposted.Value.ShouldBeTrue();
+            // ReSharper restore PossibleInvalidOperationException
+
+            //Teardown
+        }
+
+        [Test]
+        public void PostsServiceCanUnRepostAPost()
+        {
+            //Setup
+            const string postId = "1";
+            var apiCaller = A.Fake<IApiCaller>();
+            var postsService = new PostsService(apiCaller);
+            A.CallTo(() => apiCaller.ApiDelete<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPOST_ACTION, null)).Returns(new Post { Id = postId, YouReposted = false });
+
+            //Execute
+            var unrepost = postsService.Unrepost(postId);
+
+            //Verify
+            unrepost.ShouldNotBeNull();
+            unrepost.RepostOf.ShouldBeNull();
+            unrepost.Id.ShouldEqual(postId);
+            // ReSharper disable PossibleInvalidOperationException
+            unrepost.YouReposted.Value.ShouldBeFalse();
+            // ReSharper restore PossibleInvalidOperationException
+
+            //Teardown
+        }
 	}
 }

@@ -9,6 +9,7 @@ namespace Rapptor.Domain.Authorization
 
 		public string Name { get; private set; }
 
+        public static Scope Basic { get { return new Scope("basic"); } }
 		public static Scope Stream { get { return new Scope("stream"); } }
 		public static Scope Email { get { return new Scope("email"); } }
 		public static Scope WritePost { get { return new Scope("write_post"); } }

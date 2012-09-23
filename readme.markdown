@@ -6,6 +6,13 @@ Freedom in the key of C#, or a C# implementation of the App.net API.
 Release Notes
 --
 
+**Stars and Reposts - Version 0.8 (not released on NuGet)**
+- Added full starring API
+- Added full reposting API
+- Updated post general parameters
+- Minor bug fixes
+- Waiting for core annotation support and general parameters answers before Nuget release
+
 **ApiCaller Refactor - Version 0.7 (not released on NuGet)**
 - Refactored out the RestSharp ApiCaller
 - Moved the ResponseEnvelope and Metadata classes into the Domain.Response folder

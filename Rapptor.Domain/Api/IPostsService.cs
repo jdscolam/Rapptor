@@ -77,5 +77,16 @@ namespace Rapptor.Domain.Api
 		/// <param name="postStreamGeneralParameters"></param>
 		/// <returns></returns>
 		IEnumerable<Post> RetrieveTaggedPosts(string hashtag, PostStreamGeneralParameters postStreamGeneralParameters = null);
+
+	    Post StarPost(string postId);
+	    Post UnstarPost(string postId);
+
+	    /// <summary>
+	    /// Retrieves a list of posts starred by a given userId.
+	    /// </summary>
+	    /// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
+	    /// <param name="postStreamGeneralParameters"></param>
+	    /// <returns></returns>
+	    IEnumerable<Post> RetrievePostsStarredByUser(string userId, PostStreamGeneralParameters postStreamGeneralParameters = null);
 	}
 }

@@ -5,5 +5,6 @@ namespace Rapptor.Domain
 		public int Followers { get; set; }
 		public int Following { get; set; }
 		public int Posts { get; set; }
+        public int Stars { get; set; }
 	}
 }

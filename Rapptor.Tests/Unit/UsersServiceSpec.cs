@@ -178,5 +178,49 @@ namespace Rapptor.Tests.Unit
 
 			//Teardown
 		}
+
+	    [Test]
+	    public void UsersServiceCanListUsersWhoHaveStarredAPost()
+	    {
+	        //Setup
+	        const string postId = "1";
+	        var starringUser = new User();
+	        var apiCaller = A.Fake<IApiCaller>();
+	        var usersService = new UsersService(apiCaller);
+            A.CallTo(() => apiCaller.ApiGet<List<User>>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.STARS_ACTION, null)).Returns(new List<User> { starringUser });
+
+	        //Execute
+	        var starringUsers = usersService.ListUsersWhoHaveStarredPost(postId).ToList();
+
+	        //Verify
+	        starringUsers.ShouldNotBeNull();
+	        starringUsers.ShouldHaveCount(1);
+	        starringUsers.First().ShouldNotBeNull();
+	        starringUsers.First().ShouldEqual(starringUser);
+
+	        //Teardown
+	    }
+
+	    [Test]
+	    public void UsersServiceCanListUsersWhoHaveRePostedAPost()
+	    {
+            //Setup
+            const string postId = "1";
+            var repostingUser = new User();
+            var apiCaller = A.Fake<IApiCaller>();
+            var usersService = new UsersService(apiCaller);
+            A.CallTo(() => apiCaller.ApiGet<List<User>>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPOSTERS_ACTION, null)).Returns(new List<User> { repostingUser });
+
+	        //Execute
+	        var repostingUsers = usersService.ListUsersWhoHaveRepostedPost(postId).ToList();
+
+            //Verify
+            repostingUsers.ShouldNotBeNull();
+            repostingUsers.ShouldHaveCount(1);
+            repostingUsers.First().ShouldNotBeNull();
+	        repostingUsers.First().ShouldEqual(repostingUser);
+
+	        //Teardown
+	    }
 	}
 }

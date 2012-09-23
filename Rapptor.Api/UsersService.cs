@@ -122,5 +122,21 @@ namespace Rapptor.Api
 
 			return users;
 		}
+
+	    public IEnumerable<User> ListUsersWhoHaveStarredPost(string postId)
+	    {
+			var postIdCallString = postId + "/" + PostsService.STARS_ACTION;
+	        var starringUsers = _apiCaller.ApiGet<List<User>>(PostsService.POSTS_ENDPOINT + postIdCallString, null);
+
+	        return starringUsers;
+	    }
+
+	    public IEnumerable<User> ListUsersWhoHaveRepostedPost(string postId)
+        {
+            var postIdCallString = postId + "/" + PostsService.REPOSTERS_ACTION;
+            var repostingUsers = _apiCaller.ApiGet<List<User>>(PostsService.POSTS_ENDPOINT + postIdCallString, null);
+
+            return repostingUsers;
+	    }
 	}
 }

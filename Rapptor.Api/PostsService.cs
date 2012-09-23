@@ -13,11 +13,14 @@ namespace Rapptor.Api
 		public const string MENTIONS_ENDPOINT = "mentions/";
 		public const string STREAM_ENDPOINT = "stream/";
 		public const string GLOBAL_ENDPOINT = "global/";
-		public const string TAG_ENDPOINT = "tag/";
+	    public const string TAG_ENDPOINT = "tag/";
+	    public const string STARS_ACTION = "stars/";
+        public const string REPOSTERS_ACTION = "reposters/";
+        public const string REPOST_ACTION = "repost/";
 
-		private readonly IApiCaller _apiCaller;
+	    private readonly IApiCaller _apiCaller;
 
-		public PostsService(IApiCaller apiCaller)
+	    public PostsService(IApiCaller apiCaller)
 		{
 			_apiCaller = apiCaller;
 		}
@@ -61,7 +64,9 @@ namespace Rapptor.Api
 			if (postStreamGeneralParameters.IncludeReplies.HasValue) generalParameters.Add(new RequestParameter { Name = "include_replies", Value = postStreamGeneralParameters.IncludeReplies });
 			if (postStreamGeneralParameters.IncludeMuted.HasValue) generalParameters.Add(new RequestParameter { Name = "include_muted", Value = postStreamGeneralParameters.IncludeMuted });
 			if (postStreamGeneralParameters.IncludeDeleted.HasValue) generalParameters.Add(new RequestParameter { Name = "include_deleted", Value = postStreamGeneralParameters.IncludeDeleted });
-			if (postStreamGeneralParameters.IncludeDirectedPosts.HasValue) generalParameters.Add(new RequestParameter { Name = "include_directed_posts", Value = postStreamGeneralParameters.IncludeDirectedPosts });
+            if (postStreamGeneralParameters.IncludeDirectedPosts.HasValue) generalParameters.Add(new RequestParameter { Name = "include_directed_posts", Value = postStreamGeneralParameters.IncludeDirectedPosts });
+            if (postStreamGeneralParameters.IncludeStarredBy.HasValue) generalParameters.Add(new RequestParameter { Name = "include_starred_by", Value = postStreamGeneralParameters.IncludeStarredBy });
+            if (postStreamGeneralParameters.IncludeReposters.HasValue) generalParameters.Add(new RequestParameter { Name = "include_reposters", Value = postStreamGeneralParameters.IncludeReposters });
 
 			return generalParameters.Count > 0 ? generalParameters : null;
 		}
@@ -221,5 +226,56 @@ namespace Rapptor.Api
 
 			return posts;
 		}
+
+	    public Post StarPost(string postId)
+        {
+            var postIdCallString = postId + "/" + STARS_ACTION;
+            var post = _apiCaller.ApiPost<Post>(POSTS_ENDPOINT + postIdCallString, null);
+
+	        return post;
+        }
+
+	    public Post UnstarPost(string postId)
+        {
+            var postIdCallString = postId + "/" + STARS_ACTION;
+            var post = _apiCaller.ApiDelete<Post>(POSTS_ENDPOINT + postIdCallString, null);
+
+            return post;
+	    }
+
+	    /// <summary>
+	    /// Retrieves a list of posts starred by a given userId.
+	    /// </summary>
+	    /// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
+	    /// <param name="postStreamGeneralParameters"></param>
+	    /// <returns></returns>
+	    public IEnumerable<Post> RetrievePostsStarredByUser(string userId, PostStreamGeneralParameters postStreamGeneralParameters = null)
+        {
+            var userIdCallString = userId + "/" + STARS_ACTION;
+
+            var generalParameters = GetGeneralParameters(postStreamGeneralParameters);
+
+            var posts = generalParameters != null
+                ? _apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userIdCallString, null, generalParameters.ToArray())
+                : _apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userIdCallString, null);
+
+            return posts;
+	    }
+
+        public Post Repost(string postId)
+        {
+            var postIdCallString = postId + "/" + REPOST_ACTION;
+            var post = _apiCaller.ApiPost<Post>(POSTS_ENDPOINT + postIdCallString, null);
+
+            return post;
+        }
+
+	    public Post Unrepost(string postId)
+        {
+            var postIdCallString = postId + "/" + REPOST_ACTION;
+            var post = _apiCaller.ApiDelete<Post>(POSTS_ENDPOINT + postIdCallString, null);
+
+            return post;
+	    }
 	}
 }
