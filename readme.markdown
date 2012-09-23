@@ -6,11 +6,11 @@ Freedom in the key of C#, or a C# implementation of the App.net API.
 Release Notes
 --
 
-**ApiCaller Refactor - Version 0.6 (not released on NuGet)**
+**ApiCaller Refactor - Version 0.7 (not released on NuGet)**
 - Refactored out the RestSharp ApiCaller
 - Moved the ResponseEnvelope and Metadata classes into the Domain.Response folder
 
-**Machine Only - Version 0.5**
+**Machine Only - Version 0.6**
 - Added Machine only posts and post filter
 
 **ANNOTATIONS! - Version 0.5**
