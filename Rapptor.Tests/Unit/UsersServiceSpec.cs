@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Rapptor.Api;
 using Rapptor.Domain;
 using Rapptor.Domain.Api;
+using Rapptor.Domain.Response;
 
 namespace Rapptor.Tests.Unit
 {
@@ -19,14 +20,17 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<User>(UsersService.USERS_ENDPOINT + userId + "/", null)).Returns(new User { Id = "1" });
+            A.CallTo(() => apiCaller.ApiGet<User>(UsersService.USERS_ENDPOINT + userId + "/", null)).Returns(new ResponseEnvelope<User>
+                                                                                                                 {
+                                                                                                                     Data = new User { Id = "1" }
+                                                                                                                 });
 
 			//Execute
 			var userRetrieved = usersService.RetrieveUser(userId);
 
 			//Verify
-			userRetrieved.ShouldNotBeNull();
-			userRetrieved.Id.ShouldEqual(userId);
+			userRetrieved.Data.ShouldNotBeNull();
+            userRetrieved.Data.Id.ShouldEqual(userId);
 
 			//Teardown
 		}
@@ -38,15 +42,18 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiPost<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOW_ACTION, null)).Returns(new User { Id = "1", YouFollow = true });
+            A.CallTo(() => apiCaller.ApiPost<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOW_ACTION, null)).Returns(new ResponseEnvelope<User>
+                                                                                                                                               {
+                                                                                                                                                   Data = new User { Id = "1", YouFollow = true }
+                                                                                                                                               });
 
 			//Execute
 			var userFollowed = usersService.FollowUser(userId);
 
 			//Verify
-			userFollowed.ShouldNotBeNull();
-			userFollowed.Id.ShouldEqual(userId);
-			userFollowed.YouFollow.ShouldEqual(true);
+            userFollowed.Data.ShouldNotBeNull();
+            userFollowed.Data.Id.ShouldEqual(userId);
+            userFollowed.Data.YouFollow.ShouldEqual(true);
 
 			//Teardown
 		}
@@ -58,15 +65,18 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiDelete<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOW_ACTION, null)).Returns(new User { Id = "1", YouFollow = false });
+            A.CallTo(() => apiCaller.ApiDelete<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOW_ACTION, null)).Returns(new ResponseEnvelope<User>
+                                                                                                                                                 {
+                                                                                                                                                     Data = new User { Id = "1", YouFollow = false }
+                                                                                                                                                 });
 
 			//Execute
 			var userUnFollowed = usersService.UnfollowUser(userId);
 
 			//Verify
-			userUnFollowed.ShouldNotBeNull();
-			userUnFollowed.Id.ShouldEqual(userId);
-			userUnFollowed.YouFollow.ShouldEqual(false);
+            userUnFollowed.Data.ShouldNotBeNull();
+            userUnFollowed.Data.Id.ShouldEqual(userId);
+            userUnFollowed.Data.YouFollow.ShouldEqual(false);
 
 			//Teardown
 		}
@@ -78,15 +88,18 @@ namespace Rapptor.Tests.Unit
 			const string userId = "me";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOWING_ACTION, null)).Returns(new List<User> { new User { Id = "1", YouFollow = true } });
+            A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOWING_ACTION, null)).Returns(new ResponseEnvelope<List<User>>
+                                                                                                                                                       {
+                                                                                                                                                           Data = new List<User> { new User { Id = "1", YouFollow = true } }
+                                                                                                                                                       });
 
 			//Execute
-			var usersBeingFollowed = usersService.GetUsersBeingFollowed(userId).ToList();
+			var usersBeingFollowed = usersService.GetUsersBeingFollowed(userId);
 
 			//Verify
-			usersBeingFollowed.ShouldNotBeNull();
+            usersBeingFollowed.Data.ShouldNotBeNull();
 
-			foreach (var user in usersBeingFollowed)
+            foreach (var user in usersBeingFollowed.Data)
 			{
 				user.YouFollow.ShouldEqual(true);
 			}
@@ -101,15 +114,18 @@ namespace Rapptor.Tests.Unit
 			const string userId = "me";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOWERS_ACTION, null)).Returns(new List<User> { new User { Id = "1", YouFollow = true } });
+			A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.FOLLOWERS_ACTION, null)).Returns(new ResponseEnvelope<List<User>>
+			                                                                                                                                           {
+			                                                                                                                                               Data = new List<User> { new User { Id = "1", YouFollow = true } }
+			                                                                                                                                           });
 
 			//Execute
-			var followers = usersService.GetFollowers(userId).ToList();
+			var followers = usersService.GetFollowers(userId);
 
 			//Verify
 			followers.ShouldNotBeNull();
 
-			foreach (var user in followers)
+            foreach (var user in followers.Data)
 			{
 				user.YouFollow.ShouldEqual(true);
 			}
@@ -124,15 +140,18 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiPost<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.MUTE_ACTION, null)).Returns(new User { Id = "1", YouMuted = true });
+            A.CallTo(() => apiCaller.ApiPost<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.MUTE_ACTION, null)).Returns(new ResponseEnvelope<User>
+                                                                                                                                             {
+                                                                                                                                                 Data = new User { Id = "1", YouMuted = true }
+                                                                                                                                             });
 
 			//Execute
 			var userMuted = usersService.MuteUser(userId);
 
 			//Verify
-			userMuted.ShouldNotBeNull();
-			userMuted.Id.ShouldEqual(userId);
-			userMuted.YouMuted.ShouldEqual(true);
+            userMuted.Data.ShouldNotBeNull();
+            userMuted.Data.Id.ShouldEqual(userId);
+            userMuted.Data.YouMuted.ShouldEqual(true);
 
 			//Teardown
 		}
@@ -144,15 +163,18 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiDelete<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.MUTE_ACTION, null)).Returns(new User { Id = "1", YouMuted = false });
+            A.CallTo(() => apiCaller.ApiDelete<User>(UsersService.USERS_ENDPOINT + userId + "/" + UsersService.MUTE_ACTION, null)).Returns(new ResponseEnvelope<User>
+                                                                                                                                               {
+                                                                                                                                                   Data = new User { Id = "1", YouMuted = false }
+                                                                                                                                               });
 
 			//Execute
 			var userUnmuted = usersService.UnmuteUser(userId);
 
 			//Verify
-			userUnmuted.ShouldNotBeNull();
-			userUnmuted.Id.ShouldEqual(userId);
-			userUnmuted.YouMuted.ShouldEqual(false);
+            userUnmuted.Data.ShouldNotBeNull();
+            userUnmuted.Data.Id.ShouldEqual(userId);
+            userUnmuted.Data.YouMuted.ShouldEqual(false);
 
 			//Teardown
 		}
@@ -163,15 +185,15 @@ namespace Rapptor.Tests.Unit
 			//Setup
 			var apiCaller = A.Fake<IApiCaller>();
 			var usersService = new UsersService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + UsersService.MUTED_ACTION, null)).Returns(new List<User> { new User { Id = "1", YouMuted = true } });
+            A.CallTo(() => apiCaller.ApiGet<List<User>>(UsersService.USERS_ENDPOINT + UsersService.MUTED_ACTION, null)).Returns(new ResponseEnvelope<List<User>> { Data = new List<User> { new User { Id = "1", YouMuted = true } } });
 
 			//Execute
-			var mutedUsers = usersService.GetMutedUsers().ToList();
+			var mutedUsers = usersService.GetMutedUsers();
 
 			//Verify
-			mutedUsers.ShouldNotBeNull();
+            mutedUsers.Data.ShouldNotBeNull();
 
-			foreach (var user in mutedUsers)
+            foreach (var user in mutedUsers.Data)
 			{
 				user.YouMuted.ShouldEqual(true);
 			}
@@ -187,16 +209,19 @@ namespace Rapptor.Tests.Unit
 	        var starringUser = new User();
 	        var apiCaller = A.Fake<IApiCaller>();
 	        var usersService = new UsersService(apiCaller);
-            A.CallTo(() => apiCaller.ApiGet<List<User>>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.STARS_ACTION, null)).Returns(new List<User> { starringUser });
+            A.CallTo(() => apiCaller.ApiGet<List<User>>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.STARS_ACTION, null)).Returns(new ResponseEnvelope<List<User>>
+                                                                                                                                                   {
+                                                                                                                                                       Data = new List<User> { starringUser }
+                                                                                                                                                   });
 
 	        //Execute
-	        var starringUsers = usersService.ListUsersWhoHaveStarredPost(postId).ToList();
+	        var starringUsers = usersService.ListUsersWhoHaveStarredPost(postId);
 
 	        //Verify
-	        starringUsers.ShouldNotBeNull();
-	        starringUsers.ShouldHaveCount(1);
-	        starringUsers.First().ShouldNotBeNull();
-	        starringUsers.First().ShouldEqual(starringUser);
+            starringUsers.Data.ShouldNotBeNull();
+            starringUsers.Data.ShouldHaveCount(1);
+            starringUsers.Data.First().ShouldNotBeNull();
+            starringUsers.Data.First().ShouldEqual(starringUser);
 
 	        //Teardown
 	    }
@@ -209,16 +234,19 @@ namespace Rapptor.Tests.Unit
             var repostingUser = new User();
             var apiCaller = A.Fake<IApiCaller>();
             var usersService = new UsersService(apiCaller);
-            A.CallTo(() => apiCaller.ApiGet<List<User>>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPOSTERS_ACTION, null)).Returns(new List<User> { repostingUser });
+            A.CallTo(() => apiCaller.ApiGet<List<User>>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPOSTERS_ACTION, null)).Returns(new ResponseEnvelope<List<User>>
+                                                                                                                                                       {
+                                                                                                                                                           Data = new List<User> { repostingUser }
+                                                                                                                                                       });
 
 	        //Execute
-	        var repostingUsers = usersService.ListUsersWhoHaveRepostedPost(postId).ToList();
+	        var repostingUsers = usersService.ListUsersWhoHaveRepostedPost(postId);
 
             //Verify
-            repostingUsers.ShouldNotBeNull();
-            repostingUsers.ShouldHaveCount(1);
-            repostingUsers.First().ShouldNotBeNull();
-	        repostingUsers.First().ShouldEqual(repostingUser);
+            repostingUsers.Data.ShouldNotBeNull();
+            repostingUsers.Data.ShouldHaveCount(1);
+            repostingUsers.Data.First().ShouldNotBeNull();
+            repostingUsers.Data.First().ShouldEqual(repostingUser);
 
 	        //Teardown
 	    }

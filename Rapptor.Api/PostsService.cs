@@ -3,6 +3,7 @@ using System.Linq;
 using Rapptor.Domain;
 using Rapptor.Domain.Api;
 using Rapptor.Domain.Request;
+using Rapptor.Domain.Response;
 
 namespace Rapptor.Api
 {
@@ -71,24 +72,24 @@ namespace Rapptor.Api
 			return generalParameters.Count > 0 ? generalParameters : null;
 		}
 
-		/// <summary>
-		/// Creates a new post as the current AccessToken.
-		/// </summary>
-		/// <param name="createPostRequest"></param>
-		/// <returns></returns>
-		public Post CreatePost(CreatePostRequest createPostRequest)
+	    /// <summary>
+	    /// Creates a new post as the current AccessToken.
+	    /// </summary>
+	    /// <param name="createPostRequest"></param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<Post> CreatePost(CreatePostRequest createPostRequest)
 		{
 			var post = _apiCaller.ApiPost<CreatePostRequest, Post>(POSTS_ENDPOINT, null, createPostRequest);
 
 			return post;
 		}
-		
-		/// <summary>
-		/// Retrieves a post by postId.
-		/// </summary>
-		/// <param name="postId"></param>
-		/// <returns></returns>
-		public Post RetrievePost(string postId)
+
+	    /// <summary>
+	    /// Retrieves a post by postId.
+	    /// </summary>
+	    /// <param name="postId"></param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<Post> RetrievePost(string postId)
 		{
 			var postIdCallString = postId + "/";
 			var post = _apiCaller.ApiGet<Post>(POSTS_ENDPOINT + postIdCallString, null);
@@ -96,12 +97,12 @@ namespace Rapptor.Api
 			return post;
 		}
 
-		/// <summary>
-		/// Deletes a post by postId as the current AccessToken.
-		/// </summary>
-		/// <param name="postId"></param>
-		/// <returns></returns>
-		public Post DeletePost(string postId)
+	    /// <summary>
+	    /// Deletes a post by postId as the current AccessToken.
+	    /// </summary>
+	    /// <param name="postId"></param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<Post> DeletePost(string postId)
 		{
 			var postIdCallString = postId + "/";
 			var post = _apiCaller.ApiDelete<Post>(POSTS_ENDPOINT + postIdCallString, null);
@@ -109,13 +110,13 @@ namespace Rapptor.Api
 			return post;
 		}
 
-		/// <summary>
-		/// Retrieves a list of posts that have replied to the given postId.
-		/// </summary>
-		/// <param name="postId"></param>
-		/// <param name="postStreamGeneralParameters"> </param>
-		/// <returns></returns>
-		public IEnumerable<Post> RetrievePostReplies(string postId, PostStreamGeneralParameters postStreamGeneralParameters = null)
+	    /// <summary>
+	    /// Retrieves a list of posts that have replied to the given postId.
+	    /// </summary>
+	    /// <param name="postId"></param>
+	    /// <param name="postStreamGeneralParameters"> </param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<List<Post>> RetrievePostReplies(string postId, PostStreamGeneralParameters postStreamGeneralParameters = null)
 		{
 			var postIdCallString = postId + "/" + REPLIES_ACTION;
 
@@ -128,13 +129,13 @@ namespace Rapptor.Api
 			return posts;
 		}
 
-		/// <summary>
-		/// Retrieves a list of posts created by a given userId.
-		/// </summary>
-		/// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
-		/// <param name="postStreamGeneralParameters"></param>
-		/// <returns></returns>
-		public IEnumerable<Post> RetrievePostsCreatedByUser(string userId, PostStreamGeneralParameters postStreamGeneralParameters = null)
+	    /// <summary>
+	    /// Retrieves a list of posts created by a given userId.
+	    /// </summary>
+	    /// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
+	    /// <param name="postStreamGeneralParameters"></param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<List<Post>> RetrievePostsCreatedByUser(string userId, PostStreamGeneralParameters postStreamGeneralParameters = null)
 		{
 			var userIdPostsCallString = userId + "/" + POSTS_ENDPOINT;
 
@@ -147,13 +148,13 @@ namespace Rapptor.Api
 			return posts;
 		}
 
-		/// <summary>
-		/// Retrieves a list of posts where the given userId was mentioned.
-		/// </summary>
-		/// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
-		/// <param name="postStreamGeneralParameters"></param>
-		/// <returns></returns>
-		public IEnumerable<Post> RetrievePostsMentioningUser(string userId, PostStreamGeneralParameters postStreamGeneralParameters = null)
+	    /// <summary>
+	    /// Retrieves a list of posts where the given userId was mentioned.
+	    /// </summary>
+	    /// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
+	    /// <param name="postStreamGeneralParameters"></param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<List<Post>> RetrievePostsMentioningUser(string userId, PostStreamGeneralParameters postStreamGeneralParameters = null)
 		{
 			var userIdMentionssCallString = userId + "/" + MENTIONS_ENDPOINT;
 
@@ -166,14 +167,14 @@ namespace Rapptor.Api
 			return posts;
 		}
 
-		/// <summary>
-		/// Retrieves the stream for the current AccessToken.
-		/// 
-		/// NOTE:  Unless changed by the postStreamGeneralParameters, only the latest 20 posts will be returned.
-		/// </summary>
-		/// <param name="postStreamGeneralParameters"></param>
-		/// <returns></returns>
-		public IEnumerable<Post> RetrieveCurrentUsersStream(PostStreamGeneralParameters postStreamGeneralParameters = null)
+	    /// <summary>
+	    /// Retrieves the stream for the current AccessToken.
+	    /// 
+	    /// NOTE:  Unless changed by the postStreamGeneralParameters, only the latest 20 posts will be returned.
+	    /// </summary>
+	    /// <param name="postStreamGeneralParameters"></param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<List<Post>> RetrieveCurrentUsersStream(PostStreamGeneralParameters postStreamGeneralParameters = null)
 		{
 			const string currentUsersStreamCallString = POSTS_ENDPOINT + STREAM_ENDPOINT;
 
@@ -186,14 +187,14 @@ namespace Rapptor.Api
 			return posts;
 		}
 
-		/// <summary>
-		/// Retrieves the global stream for the current AccessToken.
-		/// 
-		/// NOTE:  Unless changed by the postStreamGeneralParameters, only the latest 20 posts will be returned.
-		/// </summary>
-		/// <param name="postStreamGeneralParameters"></param>
-		/// <returns></returns>
-		public IEnumerable<Post> RetrieveGlobalStream(PostStreamGeneralParameters postStreamGeneralParameters = null)
+	    /// <summary>
+	    /// Retrieves the global stream for the current AccessToken.
+	    /// 
+	    /// NOTE:  Unless changed by the postStreamGeneralParameters, only the latest 20 posts will be returned.
+	    /// </summary>
+	    /// <param name="postStreamGeneralParameters"></param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<List<Post>> RetrieveGlobalStream(PostStreamGeneralParameters postStreamGeneralParameters = null)
 		{
 			const string globalStreamCallString = POSTS_ENDPOINT + STREAM_ENDPOINT + GLOBAL_ENDPOINT;
 
@@ -206,15 +207,15 @@ namespace Rapptor.Api
 			return posts;
 		}
 
-		/// <summary>
-		/// Retrieves posts matching the given hashtag.
-		/// 
-		/// NOTE:  Unless changed by the postStreamGeneralParameters, only the latest 20 posts will be returned.
-		/// </summary>
-		/// <param name="hashtag">The hashtag to search without the # character.</param>
-		/// <param name="postStreamGeneralParameters"></param>
-		/// <returns></returns>
-		public IEnumerable<Post> RetrieveTaggedPosts(string hashtag, PostStreamGeneralParameters postStreamGeneralParameters = null)
+	    /// <summary>
+	    /// Retrieves posts matching the given hashtag.
+	    /// 
+	    /// NOTE:  Unless changed by the postStreamGeneralParameters, only the latest 20 posts will be returned.
+	    /// </summary>
+	    /// <param name="hashtag">The hashtag to search without the # character.</param>
+	    /// <param name="postStreamGeneralParameters"></param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<List<Post>> RetrieveTaggedPosts(string hashtag, PostStreamGeneralParameters postStreamGeneralParameters = null)
 		{
 			var taggedPostsCallString = POSTS_ENDPOINT + TAG_ENDPOINT + hashtag + "/";
 
@@ -227,7 +228,7 @@ namespace Rapptor.Api
 			return posts;
 		}
 
-	    public Post StarPost(string postId)
+	    public ResponseEnvelope<Post> StarPost(string postId)
         {
             var postIdCallString = postId + "/" + STARS_ACTION;
             var post = _apiCaller.ApiPost<Post>(POSTS_ENDPOINT + postIdCallString, null);
@@ -235,7 +236,7 @@ namespace Rapptor.Api
 	        return post;
         }
 
-	    public Post UnstarPost(string postId)
+	    public ResponseEnvelope<Post> UnstarPost(string postId)
         {
             var postIdCallString = postId + "/" + STARS_ACTION;
             var post = _apiCaller.ApiDelete<Post>(POSTS_ENDPOINT + postIdCallString, null);
@@ -249,7 +250,7 @@ namespace Rapptor.Api
 	    /// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
 	    /// <param name="postStreamGeneralParameters"></param>
 	    /// <returns></returns>
-	    public IEnumerable<Post> RetrievePostsStarredByUser(string userId, PostStreamGeneralParameters postStreamGeneralParameters = null)
+	    public ResponseEnvelope<List<Post>> RetrievePostsStarredByUser(string userId, PostStreamGeneralParameters postStreamGeneralParameters = null)
         {
             var userIdCallString = userId + "/" + STARS_ACTION;
 
@@ -262,7 +263,7 @@ namespace Rapptor.Api
             return posts;
 	    }
 
-        public Post Repost(string postId)
+        public ResponseEnvelope<Post> Repost(string postId)
         {
             var postIdCallString = postId + "/" + REPOST_ACTION;
             var post = _apiCaller.ApiPost<Post>(POSTS_ENDPOINT + postIdCallString, null);
@@ -270,7 +271,7 @@ namespace Rapptor.Api
             return post;
         }
 
-	    public Post Unrepost(string postId)
+	    public ResponseEnvelope<Post> Unrepost(string postId)
         {
             var postIdCallString = postId + "/" + REPOST_ACTION;
             var post = _apiCaller.ApiDelete<Post>(POSTS_ENDPOINT + postIdCallString, null);

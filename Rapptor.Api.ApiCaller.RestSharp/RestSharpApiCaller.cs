@@ -30,7 +30,7 @@ namespace Rapptor.Api.ApiCaller.RestSharp
 			}
 		}
 
-		public TReturn ApiGet<TReturn>(string endpointToCall, string accessToken, params RequestParameter[] requestParameters) where TReturn : new()
+		public ResponseEnvelope<TReturn> ApiGet<TReturn>(string endpointToCall, string accessToken, params RequestParameter[] requestParameters) where TReturn : new()
 		{
 			var request = new RestRequest(endpointToCall, Method.GET)
 				              {
@@ -50,10 +50,12 @@ namespace Rapptor.Api.ApiCaller.RestSharp
 			if(response.ErrorMessage != null)
 				throw new Exception(string.Format("Api Get of type {0} to endpoint {1} failed with message {2}", typeof(TReturn), API_BASE + endpointToCall, response.ErrorMessage));
 
-			return response.Data.Data;
+			return response.Data;
 		}
 
-		public TReturn ApiPost<TBody, TReturn>(string endpointToCall, string accessToken, TBody body = null, params RequestParameter[] requestParameters) where TReturn : new() where TBody : class, new()
+        public ResponseEnvelope<TReturn> ApiPost<TBody, TReturn>(string endpointToCall, string accessToken, TBody body = null, params RequestParameter[] requestParameters)
+            where TReturn : new()
+            where TBody : class, new()
 		{
 			var request = new RestRequest(endpointToCall, Method.POST)
 				              {
@@ -77,17 +79,17 @@ namespace Rapptor.Api.ApiCaller.RestSharp
 			if (response.ErrorMessage != null)
 				throw new Exception(string.Format("Api Post of type {0} to endpoint {1} failed with message {2}", typeof(TReturn), API_BASE + endpointToCall, response.ErrorMessage));
 
-			return response.Data.Data;
+			return response.Data;
 		}
 
-		public TReturn ApiPost<TReturn>(string endpointToCall, string accessToken, params RequestParameter[] requestParameters) where TReturn : new()
+		public ResponseEnvelope<TReturn> ApiPost<TReturn>(string endpointToCall, string accessToken, params RequestParameter[] requestParameters) where TReturn : new()
 		{
-			var response = ApiPost<object, TReturn>(endpointToCall, accessToken, requestParameters);
+			var response = ApiPost<object, TReturn>(endpointToCall, accessToken, requestParameters: requestParameters);
 
 			return response;
 		}
 
-		public TReturn ApiDelete<TReturn>(string endpointToCall, string accessToken) where TReturn : new()
+		public ResponseEnvelope<TReturn> ApiDelete<TReturn>(string endpointToCall, string accessToken) where TReturn : new()
 		{
 			var request = new RestRequest(endpointToCall, Method.DELETE) 
 				              {
@@ -104,7 +106,7 @@ namespace Rapptor.Api.ApiCaller.RestSharp
 			if (response.ErrorMessage != null)
 				throw new Exception(string.Format("Api Delete of type {0} to endpoint {1} failed with message {2}", typeof(TReturn), API_BASE + endpointToCall, response.ErrorMessage));
 
-			return response.Data.Data;
+			return response.Data;
 		}
 	}
 }

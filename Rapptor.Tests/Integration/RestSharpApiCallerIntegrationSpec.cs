@@ -14,7 +14,7 @@ namespace Rapptor.Tests.Integration
 	[TestFixture]
 	public class RestSharpApiCallerIntegrationSpec
 	{
-		private const string ACCESS_TOKEN = "[INSERT ACCESS TOKEN HERE!]";
+        private const string ACCESS_TOKEN = "[INSERT ACCESS TOKEN HERE!]";
 
 		[Test]
 		public void RestSharpApiCallerCanGetSimpleEndpoint()
@@ -23,13 +23,13 @@ namespace Rapptor.Tests.Integration
 			IApiCaller restSharpApiCaller = new RestSharpApiCaller(ACCESS_TOKEN);
 
 			//Execute
-			var tokenInfo = restSharpApiCaller.ApiGet<TokenInfoResponse>("token", null);
+			var tokenInfo = restSharpApiCaller.ApiGet<TokenInfo>("token", null);
 
 			//Verify
-			tokenInfo.ShouldNotBeNull();
-			tokenInfo.User.ShouldNotBeNull();
-			tokenInfo.User.Description.ShouldNotBeNull();
-			tokenInfo.User.Counts.ShouldNotBeNull();
+            tokenInfo.Data.ShouldNotBeNull();
+			tokenInfo.Data.User.ShouldNotBeNull();
+            tokenInfo.Data.User.Description.ShouldNotBeNull();
+            tokenInfo.Data.User.Counts.ShouldNotBeNull();
 
 			//Teardown
 		}
@@ -45,10 +45,9 @@ namespace Rapptor.Tests.Integration
 			var user = restSharpApiCaller.ApiGet<User>("users/" + userId, null);
 
 			//Verify
-			user.ShouldNotBeNull();
-			user.ShouldNotBeNull();
-			user.Description.ShouldNotBeNull();
-			user.Counts.ShouldNotBeNull();
+            user.Data.ShouldNotBeNull();
+            user.Data.Description.ShouldNotBeNull();
+            user.Data.Counts.ShouldNotBeNull();
 
 			//Teardown
 		}
@@ -69,16 +68,16 @@ namespace Rapptor.Tests.Integration
 			var postCreated = restSharpApiCaller.ApiPost<Post>("posts/", null, parameters.ToArray());
 
 			//Verify
-			postCreated.ShouldNotBeNull();
-			postCreated.Id.ShouldNotBeNull();
-			postCreated.CreatedAt.ShouldNotBeNull();
-			postCreated.Text.ShouldNotBeNull();
-			postCreated.Text.ShouldEqual(createPostRequest.Text);
-			postCreated.Entities.ShouldNotBeNull();
-			postCreated.Entities.Links.ShouldNotBeNull();
-			postCreated.Entities.Links[0].ShouldNotBeNull();
-			postCreated.ReplyTo.ShouldNotBeNull();
-			postCreated.ReplyTo.ShouldEqual(createPostRequest.ReplyTo);
+            postCreated.Data.ShouldNotBeNull();
+            postCreated.Data.Id.ShouldNotBeNull();
+            postCreated.Data.CreatedAt.ShouldNotBeNull();
+            postCreated.Data.Text.ShouldNotBeNull();
+            postCreated.Data.Text.ShouldEqual(createPostRequest.Text);
+            postCreated.Data.Entities.ShouldNotBeNull();
+            postCreated.Data.Entities.Links.ShouldNotBeNull();
+            postCreated.Data.Entities.Links[0].ShouldNotBeNull();
+            postCreated.Data.ReplyTo.ShouldNotBeNull();
+            postCreated.Data.ReplyTo.ShouldEqual(createPostRequest.ReplyTo);
 			
 
 			//Teardown
@@ -113,16 +112,16 @@ namespace Rapptor.Tests.Integration
 			var postCreated = restSharpApiCaller.ApiPost<CreatePostRequest, Post>("posts/", null, createPostRequest);
 			
 			//Verify
-			postCreated.ShouldNotBeNull();
-			postCreated.Id.ShouldNotBeNull();
+            postCreated.Data.ShouldNotBeNull();
+            postCreated.Data.Id.ShouldNotBeNull();
 
-			postCreated = restSharpApiCaller.ApiGet<Post>("posts/" + postCreated.Id + "/", null, requestParameters: parameters);
-			
-			postCreated.Annotations.ShouldNotBeNull();
-			postCreated.Annotations.ShouldHaveCount(1);
-			postCreated.Annotations.First().Type.ShouldEqual(annotation.Type);
+            postCreated = restSharpApiCaller.ApiGet<Post>("posts/" + postCreated.Data.Id + "/", null, requestParameters: parameters);
 
-			var myAnnotationObjectValue = postCreated.Annotations.First().Value as MyAnnotationClass;
+            postCreated.Data.Annotations.ShouldNotBeNull();
+            postCreated.Data.Annotations.ShouldHaveCount(1);
+            postCreated.Data.Annotations.First().Type.ShouldEqual(annotation.Type);
+
+            var myAnnotationObjectValue = postCreated.Data.Annotations.First().Value as MyAnnotationClass;
 			myAnnotationObjectValue.ShouldNotBeNull();
 			// ReSharper disable PossibleNullReferenceException
 			myAnnotationObjectValue.Name.ShouldEqual(annotationValue.Name);
@@ -147,7 +146,7 @@ namespace Rapptor.Tests.Integration
 			//Verify
 			filteredPosts.ShouldNotBeNull();
 
-			foreach (var reply in filteredPosts)
+            foreach (var reply in filteredPosts.Data)
 			{
 				reply.Id.ShouldBeGreaterThan(postStreamGeneralParameters.SinceId);
 				reply.ThreadId.ShouldEqual(postId);

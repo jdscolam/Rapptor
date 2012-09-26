@@ -20,11 +20,11 @@ namespace Rapptor.Tests.Integration
 			var usersService = new UsersService(restSharpApiCaller);
 
 			//Execute
-			var myFollowers = usersService.GetFollowers(userId).ToList();
+            var myFollowers = usersService.GetFollowers(userId);
 
 			//Verify
-			myFollowers.ShouldNotBeNull();
-			myFollowers.Count().ShouldBeGreaterThan(0);
+            myFollowers.Data.ShouldNotBeNull();
+            myFollowers.Data.Count().ShouldBeGreaterThan(0);
 
 			//Teardown
 		}
@@ -38,11 +38,11 @@ namespace Rapptor.Tests.Integration
 			var usersService = new UsersService(restSharpApiCaller);
 
 			//Execute
-			var followers = usersService.GetFollowers(userId).ToList();
+			var followers = usersService.GetFollowers(userId);
 
 			//Verify
-			followers.ShouldNotBeNull();
-			followers.Count().ShouldBeGreaterThan(0);
+            followers.Data.ShouldNotBeNull();
+            followers.Data.Count().ShouldBeGreaterThan(0);
 
 			//Teardown
 		}
@@ -56,11 +56,11 @@ namespace Rapptor.Tests.Integration
 			var usersService = new UsersService(restSharpApiCaller);
 
 			//Execute
-			var followers = usersService.GetFollowers(userId).ToList();
+			var followers = usersService.GetFollowers(userId);
 
 			//Verify
-			followers.ShouldNotBeNull();
-			followers.Count().ShouldBeGreaterThan(0);
+            followers.Data.ShouldNotBeNull();
+            followers.Data.Count().ShouldBeGreaterThan(0);
 
 			//Teardown
 		}
@@ -74,11 +74,11 @@ namespace Rapptor.Tests.Integration
 	        var usersService = new UsersService(restSharpApiCaller);
 
 	        //Execute
-	        var starringUsers = usersService.ListUsersWhoHaveStarredPost(postId).ToList();
+	        var starringUsers = usersService.ListUsersWhoHaveStarredPost(postId);
 
 	        //Verify
-	        starringUsers.ShouldNotBeNull();
-	        starringUsers.Count.ShouldBeGreaterThan(0);
+            starringUsers.Data.ShouldNotBeNull();
+            starringUsers.Data.Count.ShouldBeGreaterThan(0);
 
 
 	        //Teardown

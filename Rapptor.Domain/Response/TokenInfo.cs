@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Rapptor.Domain.Response
 {
-	public class TokenInfoResponse
+	public class TokenInfo
 	{
 		public List<string> Scopes { get; set; }
 		public User User { get; set; }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Rapptor.Domain;
 using Rapptor.Domain.Api;
+using Rapptor.Domain.Response;
 
 namespace Rapptor.Api
 {
@@ -20,12 +21,12 @@ namespace Rapptor.Api
 			_apiCaller = apiCaller;
 		}
 
-		/// <summary>
-		/// Retrieve a user.
-		/// </summary>
-		/// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
-		/// <returns></returns>
-		public User RetrieveUser(string userId)
+	    /// <summary>
+	    /// Retrieve a user.
+	    /// </summary>
+	    /// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<User> RetrieveUser(string userId)
 		{
 			var userIdCallString = userId + "/";
 			var user = _apiCaller.ApiGet<User>(USERS_ENDPOINT + userIdCallString, null);
@@ -33,12 +34,12 @@ namespace Rapptor.Api
 			return user;
 		}
 
-		/// <summary>
-		/// Follow a user on behalf of the current AccessToken.
-		/// </summary>
-		/// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
-		/// <returns></returns>
-		public User FollowUser(string userId)
+	    /// <summary>
+	    /// Follow a user on behalf of the current AccessToken.
+	    /// </summary>
+	    /// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<User> FollowUser(string userId)
 		{
 			var userIdCallString = userId + "/" + FOLLOW_ACTION;
 			var user = _apiCaller.ApiPost<User>(USERS_ENDPOINT + userIdCallString, null);
@@ -46,12 +47,12 @@ namespace Rapptor.Api
 			return user;
 		}
 
-		/// <summary>
-		/// Unfollow a user on behalf of the current AccessToken.
-		/// </summary>
-		/// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
-		/// <returns></returns>
-		public User UnfollowUser(string userId)
+	    /// <summary>
+	    /// Unfollow a user on behalf of the current AccessToken.
+	    /// </summary>
+	    /// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<User> UnfollowUser(string userId)
 		{
 			var userIdCallString = userId + "/" + FOLLOW_ACTION;
 			var user = _apiCaller.ApiDelete<User>(USERS_ENDPOINT + userIdCallString, null);
@@ -59,12 +60,12 @@ namespace Rapptor.Api
 			return user;
 		}
 
-		/// <summary>
-		/// Get a list of users being followed by a given user.
-		/// </summary>
-		/// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
-		/// <returns></returns>
-		public IEnumerable<User> GetUsersBeingFollowed(string userId)
+	    /// <summary>
+	    /// Get a list of users being followed by a given user.
+	    /// </summary>
+	    /// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<List<User>> GetUsersBeingFollowed(string userId)
 		{
 			var userIdCallString = userId + "/" + FOLLOWING_ACTION;
 			var users = _apiCaller.ApiGet<List<User>>(USERS_ENDPOINT + userIdCallString, null);
@@ -72,25 +73,25 @@ namespace Rapptor.Api
 			return users;
 		}
 
-		/// <summary>
-		/// Get a list of users who follow a given user.
-		/// </summary>
-		/// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
-		/// <returns></returns>
-		public IEnumerable<User> GetFollowers(string userId)
+	    /// <summary>
+	    /// Get a list of users who follow a given user.
+	    /// </summary>
+	    /// <param name="userId">May be a userId, Username, or "me" for the current user.</param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<List<User>> GetFollowers(string userId)
 		{
 			var userIdCallString = userId + "/" + FOLLOWERS_ACTION;
 			var users = _apiCaller.ApiGet<List<User>>(USERS_ENDPOINT + userIdCallString, null);
 
 			return users;
 		}
-		
-		/// <summary>
-		/// Mute a user on behalf of the current AccessToken.
-		/// </summary>
-		/// <param name="userId">May be a userId, or Username.</param>
-		/// <returns></returns>
-		public User MuteUser(string userId)
+
+	    /// <summary>
+	    /// Mute a user on behalf of the current AccessToken.
+	    /// </summary>
+	    /// <param name="userId">May be a userId, or Username.</param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<User> MuteUser(string userId)
 		{
 			var userIdCallString = userId + "/" + MUTE_ACTION;
 			var user = _apiCaller.ApiPost<User>(USERS_ENDPOINT + userIdCallString, null);
@@ -98,12 +99,12 @@ namespace Rapptor.Api
 			return user;
 		}
 
-		/// <summary>
-		/// Unmute a user on behalf of the current AccessToken.
-		/// </summary>
-		/// <param name="userId">May be a userId, or Username.</param>
-		/// <returns></returns>
-		public User UnmuteUser(string userId)
+	    /// <summary>
+	    /// Unmute a user on behalf of the current AccessToken.
+	    /// </summary>
+	    /// <param name="userId">May be a userId, or Username.</param>
+	    /// <returns></returns>
+	    public ResponseEnvelope<User> UnmuteUser(string userId)
 		{
 			var userIdCallString = userId + "/" + MUTE_ACTION;
 			var user = _apiCaller.ApiDelete<User>(USERS_ENDPOINT + userIdCallString, null);
@@ -112,18 +113,18 @@ namespace Rapptor.Api
 		}
 
 
-		/// <summary>
-		/// Get a list of users muted by the current AccessToken
-		/// </summary>
-		/// <returns></returns>
-		public IEnumerable<User> GetMutedUsers()
+	    /// <summary>
+	    /// Get a list of users muted by the current AccessToken
+	    /// </summary>
+	    /// <returns></returns>
+	    public ResponseEnvelope<List<User>> GetMutedUsers()
 		{
 			var users = _apiCaller.ApiGet<List<User>>(USERS_ENDPOINT + MUTED_ACTION, null);
 
 			return users;
 		}
 
-	    public IEnumerable<User> ListUsersWhoHaveStarredPost(string postId)
+	    public ResponseEnvelope<List<User>> ListUsersWhoHaveStarredPost(string postId)
 	    {
 			var postIdCallString = postId + "/" + PostsService.STARS_ACTION;
 	        var starringUsers = _apiCaller.ApiGet<List<User>>(PostsService.POSTS_ENDPOINT + postIdCallString, null);
@@ -131,7 +132,7 @@ namespace Rapptor.Api
 	        return starringUsers;
 	    }
 
-	    public IEnumerable<User> ListUsersWhoHaveRepostedPost(string postId)
+	    public ResponseEnvelope<List<User>> ListUsersWhoHaveRepostedPost(string postId)
         {
             var postIdCallString = postId + "/" + PostsService.REPOSTERS_ACTION;
             var repostingUsers = _apiCaller.ApiGet<List<User>>(PostsService.POSTS_ENDPOINT + postIdCallString, null);

@@ -67,7 +67,7 @@
     <Compile Include="Request\RequestParameter.cs" />
     <Compile Include="Response\Metadata.cs" />
     <Compile Include="Response\ResponseEnvelope.cs" />
-    <Compile Include="Response\TokenInfoResponse.cs" />
+    <Compile Include="Response\TokenInfo.cs" />
     <Compile Include="Source.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

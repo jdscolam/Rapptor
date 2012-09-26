@@ -6,6 +6,11 @@ Freedom in the key of C#, or a C# implementation of the App.net API.
 Release Notes
 --
 
+**Response Envelope Refactor - Version 0.9 (not released on NuGet)**
+- Exposed ResponseEnvelope<T> from all service endpoints
+- Minor bug fixes
+- Waiting for core annotation support and user general parameters support before Nuget release
+
 **Stars and Reposts - Version 0.8 (not released on NuGet)**
 - Added full starring API
 - Added full reposting API
@@ -149,6 +154,7 @@ Included Objects
 Input Needed (and Pull-Requests Accepted)
 --
 
+1. Ideas on implementing core annotations without required Json.Net type information.
 1. Any suggestions on how to avoid showing a browser for authentication.
 1. Any thoughts on cleaning up current code as it stands.
 1. Ideas on Filters, Streams, and Subscriptions implementation.
@@ -159,7 +165,7 @@ Coming Soon
 1. More API calls as they are delivered by App.net team
 1. Async authorization calls
 1. Example app
-1. Super secret feature
+1. Further RapptorMods as well
 
 Credit Where it is Due
 --

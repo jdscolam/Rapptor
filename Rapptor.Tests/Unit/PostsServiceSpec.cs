@@ -8,6 +8,7 @@ using Rapptor.Api;
 using Rapptor.Domain;
 using Rapptor.Domain.Api;
 using Rapptor.Domain.Request;
+using Rapptor.Domain.Response;
 
 namespace Rapptor.Tests.Unit
 {
@@ -26,26 +27,29 @@ namespace Rapptor.Tests.Unit
 				                        };
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(apiCaller).WithReturnType<Post>().Returns(new Post
+			A.CallTo(apiCaller).WithReturnType<ResponseEnvelope<Post>>().Returns(new ResponseEnvelope<Post> 
+            { 
+                Data = new Post
 					         {
 						         Id = "1"
 								 , CreatedAt = createdAt
 								 , Text = createPostRequest.Text
 								 , ReplyTo = createPostRequest.ReplyTo
-					         });
+					         }
+            });
 
 			//Execute
 			var postCreated = postsService.CreatePost(createPostRequest);
 
 			//Verify
-			postCreated.ShouldNotBeNull();
-			postCreated.Id.ShouldNotBeNull();
-			postCreated.CreatedAt.ShouldNotBeNull();
-			postCreated.CreatedAt.ShouldEqual(createdAt);
-			postCreated.Text.ShouldNotBeNull();
-			postCreated.Text.ShouldEqual(createPostRequest.Text);
-			postCreated.ReplyTo.ShouldNotBeNull();
-			postCreated.ReplyTo.ShouldEqual(createPostRequest.ReplyTo);
+            postCreated.Data.ShouldNotBeNull();
+            postCreated.Data.Id.ShouldNotBeNull();
+            postCreated.Data.CreatedAt.ShouldNotBeNull();
+            postCreated.Data.CreatedAt.ShouldEqual(createdAt);
+            postCreated.Data.Text.ShouldNotBeNull();
+            postCreated.Data.Text.ShouldEqual(createPostRequest.Text);
+            postCreated.Data.ReplyTo.ShouldNotBeNull();
+            postCreated.Data.ReplyTo.ShouldEqual(createPostRequest.ReplyTo);
 
 			//Teardown
 		}
@@ -57,15 +61,15 @@ namespace Rapptor.Tests.Unit
 			const string postId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<Post>(PostsService.POSTS_ENDPOINT + postId + "/", null)).Returns(new Post { Id = "1" });
+			A.CallTo(() => apiCaller.ApiGet<Post>(PostsService.POSTS_ENDPOINT + postId + "/", null)).Returns(new ResponseEnvelope<Post> { Data = new Post { Id = "1" }});
 
 			//Execute
 			var post = postsService.RetrievePost(postId);
 
 			//Verify
-			post.ShouldNotBeNull();
-			post.Id.ShouldNotBeNull();
-			post.Id.ShouldEqual(postId);
+            post.Data.ShouldNotBeNull();
+            post.Data.Id.ShouldNotBeNull();
+            post.Data.Id.ShouldEqual(postId);
 
 			//Teardown
 		}
@@ -77,15 +81,15 @@ namespace Rapptor.Tests.Unit
 			const string postId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiDelete<Post>(PostsService.POSTS_ENDPOINT + postId + "/", null)).Returns(new Post { Id = "1" });
+            A.CallTo(() => apiCaller.ApiDelete<Post>(PostsService.POSTS_ENDPOINT + postId + "/", null)).Returns(new ResponseEnvelope<Post> { Data = new Post { Id = "1" } });
 
 			//Execute
 			var deletedPost = postsService.DeletePost(postId);
 
 			//Verify
-			deletedPost.ShouldNotBeNull();
-			deletedPost.Id.ShouldNotBeNull();
-			deletedPost.Id.ShouldEqual(postId);
+            deletedPost.Data.ShouldNotBeNull();
+            deletedPost.Data.Id.ShouldNotBeNull();
+            deletedPost.Data.Id.ShouldEqual(postId);
 
 
 			//Teardown
@@ -98,15 +102,21 @@ namespace Rapptor.Tests.Unit
 			const string postId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPLIES_ACTION, null)).Returns(new List<Post> { new Post { ReplyTo = "1" } });
+            A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPLIES_ACTION, null)).Returns(new ResponseEnvelope<List<Post>>
+                                                                                                                                                     {
+                                                                                                                                                         Data = new List<Post>
+                                                                                                                                                                    {
+                                                                                                                                                                        new Post { ReplyTo = "1" }
+                                                                                                                                                                    }
+                                                                                                                                                     });
 
 			//Execute
-			var postReplies = postsService.RetrievePostReplies(postId).ToList();
+			var postReplies = postsService.RetrievePostReplies(postId);
 
 			//Verify
 			postReplies.ShouldNotBeNull();
 
-			foreach (var reply in postReplies)
+            foreach (var reply in postReplies.Data)
 			{
 				reply.ReplyTo.ShouldEqual(postId);
 			}
@@ -122,15 +132,21 @@ namespace Rapptor.Tests.Unit
 			var postStreamGeneralParameters = new PostStreamGeneralParameters { SinceId = "2"};
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(apiCaller).WithReturnType<List<Post>>().Returns(new List<Post> { new Post { Id = "3", ThreadId = "1" } });
+            A.CallTo(apiCaller).WithReturnType<ResponseEnvelope<List<Post>>>().Returns(new ResponseEnvelope<List<Post>>
+                                                                                           {
+                                                                                               Data = new List<Post>
+                                                                                                          {
+                                                                                                              new Post { Id = "3", ThreadId = "1" }
+                                                                                                          }
+                                                                                           });
 
 			//Execute
-			var postReplies = postsService.RetrievePostReplies(postId, postStreamGeneralParameters).ToList();
+			var postReplies = postsService.RetrievePostReplies(postId, postStreamGeneralParameters);
 
 			//Verify
 			postReplies.ShouldNotBeNull();
 
-			foreach (var reply in postReplies)
+            foreach (var reply in postReplies.Data)
 			{
 				reply.Id.ShouldBeGreaterThan(postStreamGeneralParameters.SinceId);
 				reply.ThreadId.ShouldEqual(postId);	//Here we are testing to make sure we are replying to the thread rather than the specific post.
@@ -146,15 +162,24 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userId + "/" + PostsService.POSTS_ENDPOINT, null)).Returns(new List<Post> { new Post { User = new User { Id = userId } } });
+            A.CallTo(() => apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userId + "/" + PostsService.POSTS_ENDPOINT, null)).Returns(new ResponseEnvelope<List<Post>>
+                                                                                                                                                     {
+                                                                                                                                                         Data = new List<Post>
+                                                                                                                                                                    {
+                                                                                                                                                                        new Post
+                                                                                                                                                                            {
+                                                                                                                                                                                User = new User { Id = userId }
+                                                                                                                                                                            }
+                                                                                                                                                                    }
+                                                                                                                                                     });
 
 			//Execute
-			var posts = postsService.RetrievePostsCreatedByUser(userId).ToList();
+			var posts = postsService.RetrievePostsCreatedByUser(userId);
 
 			//Verify
 			posts.ShouldNotBeNull();
 
-			foreach (var post in posts)
+            foreach (var post in posts.Data)
 			{
 				post.User.ShouldNotBeNull();
 				post.User.Id.ShouldNotBeNull();
@@ -172,15 +197,18 @@ namespace Rapptor.Tests.Unit
 			var postStreamGeneralParameters = new PostStreamGeneralParameters { BeforeId = "10" };
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(apiCaller).WithReturnType<List<Post>>().Returns(new List<Post> { new Post { Id = "5", User = new User { Id = userId } } });
+            A.CallTo(apiCaller).WithReturnType<ResponseEnvelope<List<Post>>>().Returns(new ResponseEnvelope<List<Post>>
+                                                                                           {
+                                                                                               Data = new List<Post> { new Post { Id = "5", User = new User { Id = userId } } }
+                                                                                           });
 
 			//Execute
-			var posts = postsService.RetrievePostsCreatedByUser(userId, postStreamGeneralParameters).ToList();
+			var posts = postsService.RetrievePostsCreatedByUser(userId, postStreamGeneralParameters);
 
 			//Verify
 			posts.ShouldNotBeNull();
 
-			foreach (var post in posts)
+            foreach (var post in posts.Data)
 			{
 				post.User.ShouldNotBeNull();
 				post.User.Id.ShouldNotBeNull();
@@ -198,8 +226,10 @@ namespace Rapptor.Tests.Unit
 			const string userId = "1";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userId + "/" + PostsService.MENTIONS_ENDPOINT, null))
-				.Returns(new List<Post>
+            A.CallTo(() => apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userId + "/" + PostsService.MENTIONS_ENDPOINT, null))
+                .Returns(new ResponseEnvelope<List<Post>>
+                {
+                    Data = new List<Post>
 					         {
 						         new Post
 							         {
@@ -211,15 +241,16 @@ namespace Rapptor.Tests.Unit
 											                               }
 									                    }
 							         }
-					         });
+					         }
+                });
 
 			//Execute
-			var posts = postsService.RetrievePostsMentioningUser(userId).ToList();
+			var posts = postsService.RetrievePostsMentioningUser(userId);
 
 			//Verify
 			posts.ShouldNotBeNull();
 
-			foreach (var post in posts)
+            foreach (var post in posts.Data)
 			{
 				post.Entities.ShouldNotBeNull();
 				post.Entities.Mentions.ShouldNotBeNull();
@@ -239,8 +270,10 @@ namespace Rapptor.Tests.Unit
 			var postStreamGeneralParameters = new PostStreamGeneralParameters { Count = 1 };
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(apiCaller).WithReturnType<List<Post>>()
-				.Returns(new List<Post>
+            A.CallTo(apiCaller).WithReturnType<ResponseEnvelope<List<Post>>>()
+                .Returns(new ResponseEnvelope<List<Post>>
+                {
+                    Data = new List<Post>
 					         {
 						         new Post
 							         {
@@ -252,16 +285,17 @@ namespace Rapptor.Tests.Unit
 											                               }
 									                    }
 							         }
-					         });
+					         }
+                });
 
 			//Execute
-			var posts = postsService.RetrievePostsMentioningUser(userId, postStreamGeneralParameters).ToList();
+			var posts = postsService.RetrievePostsMentioningUser(userId, postStreamGeneralParameters);
 
 			//Verify
-			posts.ShouldNotBeNull();
-			posts.Count.ShouldEqual(postStreamGeneralParameters.Count);
+            posts.Data.ShouldNotBeNull();
+            posts.Data.Count.ShouldEqual(postStreamGeneralParameters.Count);
 
-			foreach (var post in posts)
+            foreach (var post in posts.Data)
 			{
 				post.Entities.ShouldNotBeNull();
 				post.Entities.Mentions.ShouldNotBeNull();
@@ -279,14 +313,17 @@ namespace Rapptor.Tests.Unit
 			//Setup
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.STREAM_ENDPOINT, null)).Returns(new List<Post> { new Post() });
+            A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.STREAM_ENDPOINT, null)).Returns(new ResponseEnvelope<List<Post>>
+                                                                                                                                       {
+                                                                                                                                           Data = new List<Post> { new Post() }
+                                                                                                                                       });
 
 			//Execute
-			var posts = postsService.RetrieveCurrentUsersStream().ToList();
+			var posts = postsService.RetrieveCurrentUsersStream();
 
 			//Verify
-			posts.ShouldNotBeNull();
-			posts.ShouldHaveCount(1);
+            posts.Data.ShouldNotBeNull();
+            posts.Data.ShouldHaveCount(1);
 
 			//Teardown
 		}
@@ -298,15 +335,18 @@ namespace Rapptor.Tests.Unit
 			var postStreamGeneralParameters = new PostStreamGeneralParameters { IncludeUser = 1 };
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(apiCaller).WithReturnType<List<Post>>().Returns(new List<Post> { new Post { User = new User() } });
+			A.CallTo(apiCaller).WithReturnType<ResponseEnvelope<List<Post>>>().Returns(new ResponseEnvelope<List<Post>>
+			                                                                               {
+			                                                                                   Data = new List<Post> { new Post { User = new User() } }
+			                                                                               });
 
 			//Execute
-			var posts = postsService.RetrieveCurrentUsersStream(postStreamGeneralParameters).ToList();
+			var posts = postsService.RetrieveCurrentUsersStream(postStreamGeneralParameters);
 
 			//Verify
-			posts.ShouldNotBeNull();
-			posts.ShouldHaveCount(1);
-			posts[0].User.ShouldNotBeNull();
+            posts.Data.ShouldNotBeNull();
+            posts.Data.ShouldHaveCount(1);
+            posts.Data[0].User.ShouldNotBeNull();
 
 			//Teardown
 		}
@@ -317,14 +357,17 @@ namespace Rapptor.Tests.Unit
 			//Setup
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.STREAM_ENDPOINT + PostsService.GLOBAL_ENDPOINT, null)).Returns(new List<Post> { new Post() });
+            A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.STREAM_ENDPOINT + PostsService.GLOBAL_ENDPOINT, null)).Returns(new ResponseEnvelope<List<Post>>
+                                                                                                                                                                      {
+                                                                                                                                                                          Data = new List<Post> { new Post() }
+                                                                                                                                                                      });
 
 			//Execute
-			var posts = postsService.RetrieveGlobalStream().ToList();
+			var posts = postsService.RetrieveGlobalStream();
 
 			//Verify
-			posts.ShouldNotBeNull();
-			posts.ShouldHaveCount(1);
+            posts.Data.ShouldNotBeNull();
+            posts.Data.ShouldHaveCount(1);
 
 			//Teardown
 		}
@@ -336,15 +379,18 @@ namespace Rapptor.Tests.Unit
 			var postStreamGeneralParameters = new PostStreamGeneralParameters { IncludeUser = 1 };
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(apiCaller).WithReturnType<List<Post>>().Returns(new List<Post> { new Post { User = new User() } });
+            A.CallTo(apiCaller).WithReturnType<ResponseEnvelope<List<Post>>>().Returns(new ResponseEnvelope<List<Post>>
+                                                                                           {
+                                                                                               Data = new List<Post> { new Post { User = new User() } }
+                                                                                           });
 
 			//Execute
-			var posts = postsService.RetrieveGlobalStream(postStreamGeneralParameters).ToList();
+			var posts = postsService.RetrieveGlobalStream(postStreamGeneralParameters);
 
 			//Verify
-			posts.ShouldNotBeNull();
-			posts.ShouldHaveCount(1);
-			posts[0].User.ShouldNotBeNull();
+            posts.Data.ShouldNotBeNull();
+            posts.Data.ShouldHaveCount(1);
+            posts.Data[0].User.ShouldNotBeNull();
 
 			//Teardown
 		}
@@ -356,8 +402,10 @@ namespace Rapptor.Tests.Unit
 			const string hashtag = "Test";
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.TAG_ENDPOINT + hashtag + "/", null))
-				.Returns(new List<Post>
+            A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.TAG_ENDPOINT + hashtag + "/", null))
+                .Returns(new ResponseEnvelope<List<Post>>
+                {
+                    Data = new List<Post>
 					         {
 						         new Post
 							         {
@@ -374,15 +422,16 @@ namespace Rapptor.Tests.Unit
 											                               }
 									                    }
 							         }
-					         });
+					         }
+                });
 
 			//Execute
-			var posts = postsService.RetrieveTaggedPosts(hashtag).ToList();
+			var posts = postsService.RetrieveTaggedPosts(hashtag);
 
 			//Verify
 			posts.ShouldNotBeNull();
 
-			foreach (var post in posts)
+            foreach (var post in posts.Data)
 			{
 				post.Text.ShouldContain(hashtag);
 				post.Entities.ShouldNotBeNull();
@@ -401,8 +450,10 @@ namespace Rapptor.Tests.Unit
 			var postStreamGeneralParameters = new PostStreamGeneralParameters { IncludeUser = 1 };
 			var apiCaller = A.Fake<IApiCaller>();
 			var postsService = new PostsService(apiCaller);
-			A.CallTo(() => apiCaller.ApiGet<List<Post>>(PostsService.POSTS_ENDPOINT + PostsService.TAG_ENDPOINT + hashtag + "/", null))
-				.Returns(new List<Post>
+            A.CallTo(apiCaller).WithReturnType<ResponseEnvelope<List<Post>>>()
+                .Returns(new ResponseEnvelope<List<Post>>
+                {
+                    Data = new List<Post>
 					         {
 						         new Post
 							         {
@@ -420,15 +471,16 @@ namespace Rapptor.Tests.Unit
 									                    }
 											, User = new User()
 							         }
-					         });
+					         }
+                });
 
 			//Execute
-			var posts = postsService.RetrieveTaggedPosts(hashtag, postStreamGeneralParameters).ToList();
+			var posts = postsService.RetrieveTaggedPosts(hashtag, postStreamGeneralParameters);
 
 			//Verify
 			posts.ShouldNotBeNull();
 
-			foreach (var post in posts)
+            foreach (var post in posts.Data)
 			{
 				post.Text.ShouldContain(hashtag);
 				post.Entities.ShouldNotBeNull();
@@ -447,16 +499,19 @@ namespace Rapptor.Tests.Unit
 	        const string postId = "1";
 	        var apiCaller = A.Fake<IApiCaller>();
 	        var postsService = new PostsService(apiCaller);
-            A.CallTo(() => apiCaller.ApiPost<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.STARS_ACTION, null)).Returns(new Post { YouStarred = true });
+            A.CallTo(() => apiCaller.ApiPost<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.STARS_ACTION, null)).Returns(new ResponseEnvelope<Post>
+                                                                                                                                              {
+                                                                                                                                                  Data = new Post { YouStarred = true }
+                                                                                                                                              });
 
 	        //Execute
 	        var starredPost = postsService.StarPost(postId);
 
 	        //Verify
-	        starredPost.ShouldNotBeNull();
-            starredPost.YouStarred.HasValue.ShouldBeTrue();
+            starredPost.Data.ShouldNotBeNull();
+            starredPost.Data.YouStarred.HasValue.ShouldBeTrue();
             // ReSharper disable PossibleInvalidOperationException
-            starredPost.YouStarred.Value.ShouldBeTrue();
+            starredPost.Data.YouStarred.Value.ShouldBeTrue();
             // ReSharper restore PossibleInvalidOperationException
 
 	        //Teardown
@@ -469,16 +524,19 @@ namespace Rapptor.Tests.Unit
             const string postId = "1";
             var apiCaller = A.Fake<IApiCaller>();
             var postsService = new PostsService(apiCaller);
-            A.CallTo(() => apiCaller.ApiDelete<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.STARS_ACTION, null)).Returns(new Post { YouStarred = false });
+            A.CallTo(() => apiCaller.ApiDelete<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.STARS_ACTION, null)).Returns(new ResponseEnvelope<Post>
+                                                                                                                                                {
+                                                                                                                                                    Data = new Post { YouStarred = false }
+                                                                                                                                                });
 
             //Execute
             var unstarredPost = postsService.UnstarPost(postId);
 
             //Verify
-            unstarredPost.ShouldNotBeNull();
-            unstarredPost.YouStarred.HasValue.ShouldBeTrue();
+            unstarredPost.Data.ShouldNotBeNull();
+            unstarredPost.Data.YouStarred.HasValue.ShouldBeTrue();
             // ReSharper disable PossibleInvalidOperationException
-            unstarredPost.YouStarred.Value.ShouldBeFalse();
+            unstarredPost.Data.YouStarred.Value.ShouldBeFalse();
             // ReSharper restore PossibleInvalidOperationException
 
             //Teardown
@@ -492,17 +550,20 @@ namespace Rapptor.Tests.Unit
             var apiCaller = A.Fake<IApiCaller>();
             var postsService = new PostsService(apiCaller);
             A.CallTo(() => apiCaller.ApiGet<List<Post>>(UsersService.USERS_ENDPOINT + userId + "/" + PostsService.STARS_ACTION, null))
-                .Returns(new List<Post> { new Post { YouStarred = true } });
+                .Returns(new ResponseEnvelope<List<Post>>
+                             {
+                                 Data = new List<Post> { new Post { YouStarred = true } }
+                             });
 
             //Execute
-            var posts = postsService.RetrievePostsStarredByUser(userId).ToList();
+            var posts = postsService.RetrievePostsStarredByUser(userId);
 
             //Verify
-            posts.ShouldNotBeNull();
-            posts.ShouldHaveCount(1);
-            posts.First().YouStarred.HasValue.ShouldBeTrue();
+            posts.Data.ShouldNotBeNull();
+            posts.Data.ShouldHaveCount(1);
+            posts.Data.First().YouStarred.HasValue.ShouldBeTrue();
             // ReSharper disable PossibleInvalidOperationException
-            posts.First().YouStarred.Value.ShouldBeTrue();
+            posts.Data.First().YouStarred.Value.ShouldBeTrue();
             // ReSharper restore PossibleInvalidOperationException
 
             //Teardown
@@ -515,17 +576,27 @@ namespace Rapptor.Tests.Unit
             const string postId = "1";
             var apiCaller = A.Fake<IApiCaller>();
             var postsService = new PostsService(apiCaller);
-            A.CallTo(() => apiCaller.ApiPost<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPOST_ACTION, null)).Returns(new Post { RepostOf = new Post {Id = postId, YouReposted = true} });
+            A.CallTo(() => apiCaller.ApiPost<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPOST_ACTION, null)).Returns(new ResponseEnvelope<Post>
+                                                                                                                                               {
+                                                                                                                                                   Data = new Post
+                                                                                                                                                              {
+                                                                                                                                                                  RepostOf = new Post
+                                                                                                                                                                                 {
+                                                                                                                                                                                     Id = postId
+                                                                                                                                                                                     , YouReposted = true
+                                                                                                                                                                                 }
+                                                                                                                                                              }
+                                                                                                                                               });
 
             //Execute
             var repost = postsService.Repost(postId);
 
             //Verify
-            repost.ShouldNotBeNull();
-            repost.RepostOf.ShouldNotBeNull();
-            repost.RepostOf.Id.ShouldEqual(postId);
+            repost.Data.ShouldNotBeNull();
+            repost.Data.RepostOf.ShouldNotBeNull();
+            repost.Data.RepostOf.Id.ShouldEqual(postId);
             // ReSharper disable PossibleInvalidOperationException
-            repost.RepostOf.YouReposted.Value.ShouldBeTrue();
+            repost.Data.RepostOf.YouReposted.Value.ShouldBeTrue();
             // ReSharper restore PossibleInvalidOperationException
 
             //Teardown
@@ -538,17 +609,20 @@ namespace Rapptor.Tests.Unit
             const string postId = "1";
             var apiCaller = A.Fake<IApiCaller>();
             var postsService = new PostsService(apiCaller);
-            A.CallTo(() => apiCaller.ApiDelete<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPOST_ACTION, null)).Returns(new Post { Id = postId, YouReposted = false });
+            A.CallTo(() => apiCaller.ApiDelete<Post>(PostsService.POSTS_ENDPOINT + postId + "/" + PostsService.REPOST_ACTION, null)).Returns(new ResponseEnvelope<Post>
+                                                                                                                                                 {
+                                                                                                                                                     Data = new Post { Id = postId, YouReposted = false }
+                                                                                                                                                 });
 
             //Execute
             var unrepost = postsService.Unrepost(postId);
 
             //Verify
-            unrepost.ShouldNotBeNull();
-            unrepost.RepostOf.ShouldBeNull();
-            unrepost.Id.ShouldEqual(postId);
+            unrepost.Data.ShouldNotBeNull();
+            unrepost.Data.RepostOf.ShouldBeNull();
+            unrepost.Data.Id.ShouldEqual(postId);
             // ReSharper disable PossibleInvalidOperationException
-            unrepost.YouReposted.Value.ShouldBeFalse();
+            unrepost.Data.YouReposted.Value.ShouldBeFalse();
             // ReSharper restore PossibleInvalidOperationException
 
             //Teardown

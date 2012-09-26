@@ -20,12 +20,12 @@ namespace Rapptor.Tests.Integration
             var postsService = new PostsService(restSharpApiCaller);
 
             //Execute
-            var starredPosts = postsService.RetrievePostsStarredByUser(userId).ToList();
+            var starredPosts = postsService.RetrievePostsStarredByUser(userId);
 
             //Verify
-            starredPosts.ShouldNotBeNull();
-            starredPosts.Count.ShouldBeGreaterThan(0);
-            foreach (var post in starredPosts)
+            starredPosts.Data.ShouldNotBeNull();
+            starredPosts.Data.Count.ShouldBeGreaterThan(0);
+            foreach (var post in starredPosts.Data)
             {
                 post.YouStarred.HasValue.ShouldBeTrue();
                 // ReSharper disable PossibleInvalidOperationException

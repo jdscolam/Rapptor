@@ -4,6 +4,6 @@ namespace Rapptor.Domain.Api
 {
 	public interface ITokenService
 	{
-		TokenInfoResponse RetrieveCurrentTokenInfo();
+		ResponseEnvelope<TokenInfo> RetrieveCurrentTokenInfo();
 	}
 }

@@ -14,9 +14,9 @@ namespace Rapptor.Api
 			_apiCaller = apiCaller;
 		}
 
-		public TokenInfoResponse RetrieveCurrentTokenInfo()
+		public ResponseEnvelope<TokenInfo> RetrieveCurrentTokenInfo()
 		{
-			var tokenResponse = _apiCaller.ApiGet<TokenInfoResponse>(TOKEN_ENDPOINT, null);
+			var tokenResponse = _apiCaller.ApiGet<TokenInfo>(TOKEN_ENDPOINT, null);
 
 			return tokenResponse;
 		}
